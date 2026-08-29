@@ -9,10 +9,10 @@
 
     <!-- Google Fonts: Festive Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK (Optional for Cloud Sync) -->
+    <!-- Firebase SDK Compatibility Libraries -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
@@ -63,6 +63,7 @@
             color: var(--color-text-main);
             position: fixed;
         }
+        /* Ambient Festive Backdrops */
         
         .ambient-glow {
             position: absolute;
@@ -129,6 +130,7 @@
                 opacity: 0;
             }
         }
+        /* Sound Control Button */
         
         .audio-toggle {
             position: absolute;
@@ -158,6 +160,7 @@
             width: 20px;
             height: 20px;
         }
+        /* Clean Realtime Status Pill */
         
         .connection-status-pill {
             position: absolute;
@@ -192,7 +195,7 @@
         .hidden {
             display: none !important;
         }
-        /* App Stage */
+        /* App Stage (Mobile Responsive Wrapper) */
         
         .app-stage {
             position: relative;
@@ -260,7 +263,7 @@
         .full-height-stage {
             padding: 16px 16px 6px;
         }
-        /* Welcome Screen */
+        /* Welcome Scene */
         
         .scene-welcome .scene-inner {
             justify-content: space-around;
@@ -479,7 +482,7 @@
             margin-top: 8px;
             cursor: pointer;
         }
-        /* Share & Waiting Screen */
+        /* Sister Waiting Screen */
         
         .share-box-card {
             width: 100%;
@@ -558,12 +561,12 @@
         
         .waiting-radar-container {
             position: relative;
-            width: 75px;
-            height: 75px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 8px 0;
+            margin: 16px 0;
         }
         
         .radar-circle {
@@ -594,39 +597,22 @@
         }
         
         .radar-center-icon {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             z-index: 2;
         }
         
         .live-waiting-text {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--color-festive-maroon);
+            text-align: center;
         }
         
         .highlight-name {
             color: var(--color-festive-red);
             font-weight: 700;
         }
-        
-        .btn-simulate-solo {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            cursor: pointer;
-            margin-top: 8px;
-            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
-            transition: transform 0.2s;
-        }
-        
-        .btn-simulate-solo:active {
-            transform: scale(0.96);
-        }
-        /* Buttons */
+        /* Action Buttons */
         
         .action-dock {
             width: 100%;
@@ -1048,6 +1034,9 @@
             color: var(--color-text-muted);
             margin-bottom: 6px;
         }
+        /* ==========================================================================
+       SMOOTH HARDWARE-ACCELERATED MOBILE DRAGGER
+       ========================================================================== */
         
         .draggable-rakhi-container {
             position: relative;
@@ -1058,20 +1047,21 @@
             justify-content: center;
             cursor: grab;
             touch-action: none;
+            -webkit-touch-callout: none;
             z-index: 30;
-            transition: transform 0.3s var(--ease-spring);
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
         
-        .draggable-rakhi-container:active,
         .draggable-rakhi-container.dragging {
             cursor: grabbing;
-            transform: scale(1.15);
+            transition: none !important;
             filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
             z-index: 100;
         }
         
         .draggable-rakhi-container.returning {
-            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         }
         
         .rakhi-drag-svg-wrapper {
@@ -1080,6 +1070,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            pointer-events: none;
         }
         
         .rakhi-drag-svg-wrapper svg {
@@ -1431,7 +1422,7 @@
             display: inline-block;
             animation: heartBeat 1.5s infinite;
         }
-        /* UPI Gifting & Coffee Modals */
+        /* UPI Gifting & Support Modals */
         
         .modal-overlay {
             position: fixed;
@@ -1821,13 +1812,13 @@
             </div>
         </section>
 
-        <!-- SISTER STEP 2 & 3: INVITE & WAITING SCREEN -->
+        <!-- SISTER STEP 2: SHARE & WAITING FOR BROTHER -->
         <section class="scene scene-waiting" id="sceneWaitingBrother">
             <div class="scene-inner">
                 <header class="scene-header">
-                    <div class="pulsing-heart-icon" style="font-size: 2rem; margin-bottom: 4px;">💌</div>
+                    <div style="font-size: 2rem; margin-bottom: 4px;">💌</div>
                     <h2 class="scene-title">Send this invite to your brother ❤️</h2>
-                    <p class="scene-subtitle">He will join you live on his own phone</p>
+                    <p class="scene-subtitle">He will join you live on his phone</p>
                 </header>
 
                 <div class="share-box-card">
@@ -1858,16 +1849,12 @@
                 </div>
 
                 <p class="live-waiting-text" id="liveWaitingStatus">
-                    Waiting for <span class="highlight-name" id="waitingBrotherNameSpan">him</span> to open link...
+                    Waiting for <span class="highlight-name" id="waitingBrotherNameSpan">brother</span> to join...
                 </p>
 
-                <button class="btn-simulate-solo" id="btnSimulateJoinSolo">
-          ⚡ Simulate Brother Joining (Instant Test)
-        </button>
-
                 <div class="action-dock">
-                    <p class="auto-connect-hint" style="font-size: 0.72rem; color: #8c6a16; margin-top: 6px;">
-                        ⚡ Or open the link in a second browser tab to test two-device live sync!
+                    <p style="font-size: 0.74rem; color: #8c6a16; text-align: center; margin-top: 4px;">
+                        ⚡ As soon as your brother opens the link, this screen will advance automatically!
                     </p>
                 </div>
             </div>
@@ -1891,7 +1878,7 @@
                 </div>
 
                 <div class="brother-join-info-card" style="background: var(--color-bg-card); border: 1px solid rgba(212,175,55,0.3); border-radius: 18px; padding: 10px 18px; margin: 8px 0; text-align: center;">
-                    <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.15); color: #065f46; padding: 2px 8px; border-radius: 8px;">LIVE SYNC READY</span>
+                    <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.15); color: #065f46; padding: 2px 8px; border-radius: 8px;">LIVE CLOUD SYNC READY</span>
                     <p style="font-size: 0.88rem; color: var(--color-text-main); margin-top: 4px;">Connected to Room <strong id="brotherRoomCodeDisplay">------</strong></p>
                 </div>
 
@@ -2016,7 +2003,7 @@
               </g>
             </svg>
 
-                        <!-- Drop Target Zone (51.5%, 55%) -->
+                        <!-- Drop Target Zone -->
                         <div class="wrist-target-zone" id="wristDropTarget">
                             <div class="target-glow-ring"></div>
                             <div class="target-center-pin">
@@ -2154,7 +2141,7 @@
             </div>
         </section>
 
-        <!-- ======================================================================
+        <!-- ==========================================================================
          PERSISTENT FOOTER: BUY DEVELOPER A COFFEE
          ====================================================================== -->
         <footer class="app-footer">
@@ -2164,11 +2151,11 @@
       </button>
         </footer>
 
-        <!-- ======================================================================
-         UPI GIFTING & COFFEE MODALS
+        <!-- ==========================================================================
+         MODALS (GIFTING & COFFEE)
          ====================================================================== -->
 
-        <!-- DEVELOPER COFFEE MODAL (Open Amount UPI Input) -->
+        <!-- DEVELOPER COFFEE MODAL -->
         <div class="modal-overlay hidden" id="modalDevCoffee">
             <div class="modal-card">
                 <div class="modal-gift-icon">☕</div>
@@ -2178,7 +2165,6 @@
                     <p class="modal-subtext">Enjoyed this experience? Feel free to support with any amount!</p>
                 </header>
 
-                <!-- Clickable Copy UPI ID Pill -->
                 <div class="dev-upi-badge" id="btnCopyDevUpi" title="Click to copy UPI ID">
                     <span class="dev-upi-text">umakantm339-1@okicici</span>
                     <span class="dev-copy-tag" id="devUpiCopyTag">📋 Copy</span>
@@ -2297,7 +2283,32 @@
     <script>
         'use strict';
 
-        /* Rakhi Vector Artwork */
+        // ==========================================================================
+        // 🔥 FIREBASE REALTIME DATABASE CONFIGURATION
+        // (Paste your Firebase credentials here for cloud cross-device sync)
+        // ==========================================================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        function isFirebaseConfigured() {
+            return (
+                firebaseConfig.apiKey &&
+                firebaseConfig.apiKey !== "YOUR_API_KEY" &&
+                firebaseConfig.databaseURL &&
+                !firebaseConfig.databaseURL.includes("YOUR_PROJECT_ID")
+            );
+        }
+
+        // ==========================================================================
+        // RAKHI VECTOR ARTWORK DATA
+        // ==========================================================================
         const RAKHI_DATA = {
             lotus: {
                 id: 'lotus',
@@ -2432,7 +2443,9 @@
             }
         };
 
-        /* Web Audio Synthesizer */
+        // ==========================================================================
+        // AUDIO SYNTHESIZER & CONFETTI ENGINE
+        // ==========================================================================
         class FestiveSoundManager {
             constructor() {
                 this.ctx = null;
@@ -2494,7 +2507,6 @@
         }
         const sounds = new FestiveSoundManager();
 
-        /* Flower Petals & Confetti */
         class CelebrationConfetti {
             constructor(canvasId) {
                 this.canvas = document.getElementById(canvasId);
@@ -2571,84 +2583,15 @@
             }
         }
 
-        /* Realtime Synchronization Manager */
-        class RealtimeSyncManager {
-            constructor() {
-                this.db = null;
-                this.useFirebase = false;
-                this.roomId = null;
-                this.onStateChangeCallback = null;
-                this.broadcastChannel = null;
-                this.init();
-            }
-
-            init() {
-                this.useFirebase = false;
-                this.updateStatus('Multi-Tab Sync (Demo Ready)', true);
-
-                if ('BroadcastChannel' in window) {
-                    try {
-                        this.broadcastChannel = new BroadcastChannel('raksha_bandhan_sync');
-                        this.broadcastChannel.onmessage = (event) => {
-                            if (event.data && event.data.roomId === this.roomId) {
-                                if (this.onStateChangeCallback) {
-                                    this.onStateChangeCallback(event.data.state);
-                                }
-                            }
-                        };
-                    } catch (e) {}
-                }
-            }
-
-            updateStatus(text, isOnline) {
-                const dot = document.querySelector('.status-dot');
-                const label = document.getElementById('statusText');
-                if (dot && label) {
-                    label.textContent = text;
-                    dot.className = `status-dot ${isOnline ? '' : 'offline'}`;
-                }
-            }
-
-            subscribe(roomId, callback) {
-                this.roomId = roomId;
-                this.onStateChangeCallback = callback;
-
-                const saved = localStorage.getItem(`room_${roomId}`);
-                if (saved) {
-                    try {
-                        const parsed = JSON.parse(saved);
-                        callback(parsed);
-                    } catch (e) {}
-                }
-            }
-
-            updateRoomState(updates) {
-                if (!this.roomId) return;
-                const key = `room_${this.roomId}`;
-                const existing = JSON.parse(localStorage.getItem(key) || '{}');
-                const merged = {...existing,
-                    ...updates
-                };
-                localStorage.setItem(key, JSON.stringify(merged));
-
-                if (this.broadcastChannel) {
-                    try {
-                        this.broadcastChannel.postMessage({
-                            roomId: this.roomId,
-                            state: merged
-                        });
-                    } catch (e) {}
-                }
-                if (this.onStateChangeCallback) {
-                    this.onStateChangeCallback(merged);
-                }
-            }
-        }
-
-        /* Main Application Controller */
+        // ==========================================================================
+        // MAIN APPLICATION CONTROLLER
+        // ==========================================================================
         class RakshaBandhanApp {
             constructor() {
-                this.role = null;
+                this.db = null;
+                this.roomRef = null;
+                this.channel = null;
+                this.role = null; // 'sister' | 'brother'
                 this.roomId = null;
                 this.sisterName = 'Sister';
                 this.brotherName = 'Brother';
@@ -2662,7 +2605,6 @@
                 this.giftPromptShown = false;
                 this.giftCelebrated = false;
 
-                this.sync = new RealtimeSyncManager();
                 this.confetti = new CelebrationConfetti('celebrationCanvas');
 
                 this.scenes = {
@@ -2687,6 +2629,7 @@
             }
 
             init() {
+                this.initFirebase();
                 this.renderRakhiList();
                 this.spawnBokehParticles();
                 this.setupEventListeners();
@@ -2694,11 +2637,45 @@
                 this.setupGiftingListeners();
                 this.setupDeveloperCoffeeListeners();
 
+                // Check if opened via URL param ?room=RAKHI-XXXXX
                 const urlParams = new URLSearchParams(window.location.search);
                 const roomParam = urlParams.get('room');
 
                 if (roomParam) {
-                    this.handleRoomLinkArrival(roomParam.toUpperCase());
+                    this.handleRoomLinkArrival(roomParam.trim().toUpperCase());
+                }
+            }
+
+            initFirebase() {
+                if (isFirebaseConfigured()) {
+                    try {
+                        if (!firebase.apps.length) {
+                            firebase.initializeApp(firebaseConfig);
+                        }
+                        this.db = firebase.database();
+
+                        this.db.ref('.info/connected').on('value', (snap) => {
+                            if (snap.val() === true) {
+                                this.updateStatus("Live Cloud Sync Active", true);
+                            } else {
+                                this.updateStatus("Ready", true);
+                            }
+                        });
+                    } catch (err) {
+                        console.warn("Firebase notice:", err);
+                        this.updateStatus("Ready", true);
+                    }
+                } else {
+                    this.updateStatus("Ready", true);
+                }
+            }
+
+            updateStatus(text, isOnline) {
+                const dot = document.querySelector('.status-dot');
+                const label = document.getElementById('statusText');
+                if (dot && label) {
+                    label.textContent = text;
+                    dot.className = `status-dot ${isOnline ? '' : 'offline'}`;
                 }
             }
 
@@ -2747,7 +2724,7 @@
 
                 document.getElementById('btnRoleBrother').addEventListener('click', () => {
                     this.role = 'brother';
-                    const manualCode = prompt('Enter the 6-character Rakhi Room Code shared by your sister:');
+                    const manualCode = prompt('Enter the Rakhi Room Code shared by your sister (e.g. RAKHI-XXXXX):');
                     if (manualCode && manualCode.trim()) {
                         this.handleRoomLinkArrival(manualCode.trim().toUpperCase());
                     }
@@ -2770,16 +2747,9 @@
                     this.createRoomInDatabase();
                 });
 
-                document.getElementById('btnSimulateJoinSolo').addEventListener('click', () => {
-                    this.sync.updateRoomState({
-                        brotherOnline: true,
-                        status: 'both_connected'
-                    });
-                });
-
                 document.getElementById('btnBrotherReady').addEventListener('click', () => {
-                    this.sync.updateRoomState({
-                        brotherOnline: true,
+                    this.syncUpdate({
+                        brotherReady: true,
                         status: 'both_connected'
                     });
                     this.goToScene('select');
@@ -2798,7 +2768,7 @@
 
                 document.getElementById('btnContinueToTie').addEventListener('click', () => {
                     if (!this.selectedRakhiId) return;
-                    this.sync.updateRoomState({
+                    this.syncUpdate({
                         status: 'tying_ready',
                         selectedRakhi: this.selectedRakhiId
                     });
@@ -2809,12 +2779,14 @@
                 document.getElementById('btnShareMoment').addEventListener('click', () => this.shareCelebrationMoment());
 
                 document.getElementById('btnRestart').addEventListener('click', () => {
-                    this.sync.updateRoomState({
+                    this.syncUpdate({
                         status: 'both_connected',
                         rakhiTied: false,
                         selectedRakhi: null,
-                        giftSent: false
+                        giftSent: false,
+                        liveDrag: null
                     });
+                    this.goToScene('select');
                 });
 
                 document.getElementById('audioToggle').addEventListener('click', () => {
@@ -2832,6 +2804,46 @@
                 });
             }
 
+            // ======================================================================
+            // UNIFIED REALTIME SYNC (Firebase Cloud + Instant Broadcast Relay)
+            // ======================================================================
+            setupChannelSync(roomId) {
+                try {
+                    if (window.BroadcastChannel) {
+                        this.channel = new BroadcastChannel(`rakhi_sync_${roomId}`);
+                        this.channel.onmessage = (event) => {
+                            if (event.data) this.handleSynchronizedState(event.data);
+                        };
+                    }
+                    window.addEventListener('storage', (e) => {
+                        if (e.key === `rakhi_state_${roomId}` && e.newValue) {
+                            try {
+                                this.handleSynchronizedState(JSON.parse(e.newValue));
+                            } catch (err) {}
+                        }
+                    });
+                } catch (e) {}
+            }
+
+            syncUpdate(data) {
+                if (this.db && this.roomRef) {
+                    try {
+                        this.roomRef.update(data);
+                    } catch (e) {}
+                }
+                if (this.roomId) {
+                    try {
+                        const cur = JSON.parse(localStorage.getItem(`rakhi_state_${this.roomId}`) || '{}');
+                        const merged = {...cur,
+                            ...data,
+                            roomId: this.roomId
+                        };
+                        localStorage.setItem(`rakhi_state_${this.roomId}`, JSON.stringify(merged));
+                        if (this.channel) this.channel.postMessage(merged);
+                    } catch (e) {}
+                }
+            }
+
             createRoomInDatabase() {
                 document.getElementById('displayRoomCode').textContent = this.roomId;
                 document.getElementById('waitingBrotherName').textContent = this.brotherName;
@@ -2845,16 +2857,30 @@
                     status: 'waiting_for_brother',
                     sisterOnline: true,
                     brotherOnline: false,
+                    brotherReady: false,
                     selectedRakhi: null,
                     rakhiTied: false,
                     giftSent: false,
                     giftAmount: null,
-                    liveDrag: null,
-                    createdAt: Date.now()
+                    liveDrag: null
                 };
 
-                this.sync.subscribe(this.roomId, (state) => this.handleSynchronizedState(state));
-                this.sync.updateRoomState(initialPayload);
+                this.setupChannelSync(this.roomId);
+
+                if (this.db) {
+                    try {
+                        this.roomRef = this.db.ref(`rooms/${this.roomId}`);
+                        this.roomRef.set(initialPayload);
+                        this.roomRef.on('value', (snapshot) => {
+                            const state = snapshot.val();
+                            if (state) this.handleSynchronizedState(state);
+                        });
+                    } catch (e) {}
+                }
+
+                try {
+                    localStorage.setItem(`rakhi_state_${this.roomId}`, JSON.stringify(initialPayload));
+                } catch (e) {}
 
                 this.goToScene('waitingBrother');
             }
@@ -2862,22 +2888,50 @@
             handleRoomLinkArrival(roomId) {
                 this.roomId = roomId;
                 this.role = 'brother';
-
                 document.getElementById('brotherRoomCodeDisplay').textContent = roomId;
 
-                this.sync.subscribe(roomId, (state) => {
-                    if (state) {
-                        this.sisterName = state.sisterName || 'Sister';
-                        this.brotherName = state.brotherName || 'Brother';
-                        this.sisterUpiId = state.sisterUpiId || 'sister@upi';
+                this.setupChannelSync(roomId);
+
+                // Check locally saved room info if available
+                try {
+                    const cached = localStorage.getItem(`rakhi_state_${roomId}`);
+                    if (cached) {
+                        const data = JSON.parse(cached);
+                        this.sisterName = data.sisterName || this.sisterName;
+                        this.brotherName = data.brotherName || this.brotherName;
+                        this.sisterUpiId = data.sisterUpiId || this.sisterUpiId;
                         document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
-                        this.handleSynchronizedState(state);
                     }
+                } catch (e) {}
+
+                if (this.db) {
+                    try {
+                        this.roomRef = this.db.ref(`rooms/${roomId}`);
+                        this.roomRef.on('value', (snapshot) => {
+                            const state = snapshot.val();
+                            if (state) {
+                                this.sisterName = state.sisterName || this.sisterName;
+                                this.brotherName = state.brotherName || this.brotherName;
+                                this.sisterUpiId = state.sisterUpiId || this.sisterUpiId;
+                                document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
+                                this.handleSynchronizedState(state);
+                            }
+                        });
+                    } catch (e) {}
+                }
+
+                // IMMEDIATELY notify Firebase that Brother has arrived
+                this.syncUpdate({
+                    brotherOnline: true,
+                    brotherJoined: true
                 });
 
                 this.goToScene('brotherJoin');
             }
 
+            // ======================================================================
+            // REALTIME STATE RECEIVER & SCENE TRANSITION LOGIC
+            // ======================================================================
             handleSynchronizedState(state) {
                 if (!state) return;
 
@@ -2890,14 +2944,17 @@
                 if (sNameEl) sNameEl.textContent = this.sisterName;
                 if (bNameEl) bNameEl.textContent = this.brotherName;
 
-                if (this.role === 'sister' && state.brotherOnline && state.status === 'both_connected') {
-                    const waitTitle = document.getElementById('liveWaitingStatus');
-                    if (waitTitle) waitTitle.innerHTML = `🎉 <strong>${this.brotherName} is here!</strong> ❤️`;
-                    setTimeout(() => {
-                        this.goToScene('select');
-                    }, 900);
+                // 1. SISTER DETECTS BROTHER OPENED THE LINK (brotherOnline === true)
+                // -> AUTOMATICALLY moves from waiting screen to Rakhi selection screen!
+                if (this.role === 'sister' && state.brotherOnline === true && this.scenes.waitingBrother.classList.contains('active')) {
+                    const waitStatus = document.getElementById('liveWaitingStatus');
+                    if (waitStatus) {
+                        waitStatus.innerHTML = `🎉 <strong>${this.brotherName} joined!</strong> Moving to Rakhi selection... ❤️`;
+                    }
+                    this.goToScene('select');
                 }
 
+                // 2. Rakhi Selection Synchronized
                 if (state.selectedRakhi) {
                     this.selectedRakhiId = state.selectedRakhi;
                     const cards = document.querySelectorAll('.rakhi-card');
@@ -2916,20 +2973,24 @@
                     }
                 }
 
-                if (state.status === 'tying_ready') {
+                // 3. Tying Scene Synchronized
+                if (state.status === 'tying_ready' && !this.scenes.tie.classList.contains('active')) {
                     this.prepareTieScene();
                     this.goToScene('tie');
                 }
 
+                // 4. Live Drag Stream on Brother's Phone
                 if (this.role === 'brother' && state.liveDrag && !this.isTied) {
                     this.applyBrotherLiveDrag(state.liveDrag);
                 }
 
-                if (state.rakhiTied && !this.isTied) {
+                // 5. Successful Tie Event Synchronized
+                if (state.rakhiTied === true && !this.isTied) {
                     this.triggerSuccessfulTie(state.selectedRakhi || this.selectedRakhiId);
                 }
 
-                if (state.giftSent && !this.giftCelebrated) {
+                // 6. Gift Received Synchronized on Sister's Phone
+                if (state.giftSent === true && !this.giftCelebrated) {
                     this.giftCelebrated = true;
                     this.triggerGiftCelebrationOnSisterScreen(state.giftAmount || 101);
                 }
@@ -2947,7 +3008,7 @@
                 });
 
                 document.getElementById('btnContinueToTie').disabled = false;
-                this.sync.updateRoomState({
+                this.syncUpdate({
                     selectedRakhi: rakhiId
                 });
             }
@@ -3002,13 +3063,13 @@
                     const deltaX = e.clientX - this.dragStartPos.x;
                     const deltaY = e.clientY - this.dragStartPos.y;
 
-                    el.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.15)`;
+                    el.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(1.15)`;
                     this.checkTargetProximity();
 
                     const now = Date.now();
-                    if (now - this.lastStreamTime > 40) {
+                    if (now - this.lastStreamTime > 45) {
                         this.lastStreamTime = now;
-                        this.sync.updateRoomState({
+                        this.syncUpdate({
                             liveDrag: {
                                 x: Math.round(deltaX),
                                 y: Math.round(deltaY),
@@ -3018,21 +3079,26 @@
                     }
                 });
 
-                const finishDrag = () => {
+                const finishDrag = (e) => {
                     if (!this.isPointerDown || this.role !== 'sister' || this.isTied) return;
                     this.isPointerDown = false;
                     el.classList.remove('dragging');
 
+                    try {
+                        el.releasePointerCapture(e.pointerId);
+                    } catch (err) {}
+
                     if (this.isNearTarget) {
-                        this.sync.updateRoomState({
+                        this.syncUpdate({
                             rakhiTied: true,
                             status: 'celebration',
                             liveDrag: null
                         });
+                        this.triggerSuccessfulTie(this.selectedRakhiId);
                     } else {
                         el.classList.add('returning');
-                        el.style.transform = `translate(0px, 0px) scale(1)`;
-                        this.sync.updateRoomState({
+                        el.style.transform = `translate3d(0px, 0px, 0px) scale(1)`;
+                        this.syncUpdate({
                             liveDrag: {
                                 x: 0,
                                 y: 0,
@@ -3168,13 +3234,12 @@
                     this.modals.paymentConfirm.classList.add('hidden');
                     document.getElementById('btnManualSendGift').classList.add('hidden');
 
-                    this.sync.updateRoomState({
+                    this.syncUpdate({
                         giftSent: true,
-                        giftAmount: this.selectedGiftAmount,
-                        giftTimestamp: Date.now()
+                        giftAmount: this.selectedGiftAmount
                     });
 
-                    alert(`Thank you! A special gift celebration was sent to ${this.sisterName} ❤️`);
+                    alert(`Thank you! A gift notification of ₹${this.selectedGiftAmount} was sent to ${this.sisterName} ❤️`);
                 });
 
                 document.getElementById('btnNotYetPaid').addEventListener('click', () => {
@@ -3187,7 +3252,6 @@
                 });
             }
 
-            /* Developer Coffee Modal Handlers (Pure Custom Amount) */
             setupDeveloperCoffeeListeners() {
                 document.getElementById('btnOpenCoffeeModal').addEventListener('click', () => {
                     this.modals.devCoffee.classList.remove('hidden');
@@ -3198,7 +3262,6 @@
                     this.modals.devCoffee.classList.add('hidden');
                 });
 
-                // Copy Developer UPI ID
                 document.getElementById('btnCopyDevUpi').addEventListener('click', () => {
                     if (navigator.clipboard) {
                         navigator.clipboard.writeText(this.devUpiId).then(() => {
@@ -3323,7 +3386,7 @@
             shareViaWhatsApp() {
                 const link = this.getShareableLink();
                 const msg = encodeURIComponent(
-                    `Hey ${this.brotherName}! ❤️ I have something special for you this Raksha Bandhan ✨ Open this link and let's tie your Rakhi live: ${link}`
+                    `Hey ${this.brotherName}! ❤️ I have something special for you this Raksha Bandhan ✨ Open this link on your phone and let's tie your Rakhi live: ${link}`
                 );
                 window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
             }
