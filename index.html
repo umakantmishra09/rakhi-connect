@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#fdf8f2">
+    <title>A Rakhi, A Promise, A Bond Forever ❤️</title>
+
+    <!-- Google Fonts: Festive Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK (Optional for Cloud Sync) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+    <style>
+        /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES
+       ========================================================================== */
+        
+         :root {
+            --color-bg-ivory: #fcf9f2;
+            --color-bg-card: rgba(255, 255, 255, 0.94);
+            --color-festive-red: #c0192d;
+            --color-festive-maroon: #7a0f1d;
+            --color-festive-saffron: #f37023;
+            --color-gold-primary: #d4af37;
+            --color-gold-light: #fbe28a;
+            --color-gold-dark: #8c6a16;
+            --color-text-main: #2b1d16;
+            --color-text-muted: #725e54;
+            --font-serif-display: 'Cinzel Decorative', 'Playfair Display', serif;
+            --font-serif-body: 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --shadow-soft: 0 10px 30px rgba(122, 15, 29, 0.08);
+            --shadow-elevated: 0 18px 45px rgba(122, 15, 29, 0.14);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: var(--color-bg-ivory);
+            font-family: var(--font-sans);
+            color: var(--color-text-main);
+            position: fixed;
+        }
+        
+        .ambient-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .glow-top {
+            top: -100px;
+            right: -50px;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 183, 3, 0.25) 0%, rgba(192, 25, 45, 0.12) 60%, transparent 80%);
+        }
+        
+        .glow-bottom {
+            bottom: -100px;
+            left: -80px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(243, 112, 35, 0.2) 0%, rgba(212, 175, 55, 0.15) 60%, transparent 80%);
+        }
+        
+        .ambient-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-bokeh-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .bokeh-dot {
+            position: absolute;
+            background: radial-gradient(circle, #fff7c2 10%, rgba(255, 215, 0, 0.6) 50%, transparent 80%);
+            border-radius: 50%;
+            animation: floatUp 8s infinite ease-in-out;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.6);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        .audio-toggle {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 50;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            color: var(--color-festive-maroon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .audio-toggle:active {
+            transform: scale(0.92);
+        }
+        
+        .audio-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .connection-status-pill {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            z-index: 50;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        .status-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            letter-spacing: 0.3px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        /* App Stage */
+        
+        .app-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: radial-gradient(circle at center, #fdf8f0 0%, #ecdcc8 100%);
+            }
+            .app-stage {
+                height: 92vh;
+                max-height: 890px;
+                border-radius: 36px;
+                box-shadow: 0 25px 60px rgba(80, 20, 20, 0.18), 0 0 0 1px rgba(212, 175, 55, 0.3);
+                background: var(--color-bg-ivory);
+            }
+        }
+        /* Scene Transitions */
+        
+        .scene {
+            position: absolute;
+            inset: 0;
+            bottom: 34px;
+            width: 100%;
+            height: calc(100% - 34px);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.96) translateY(12px);
+            transition: opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth), visibility 0.55s;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .scene.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+        
+        .scene-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 20px 18px 8px;
+        }
+        
+        .full-height-stage {
+            padding: 16px 16px 6px;
+        }
+        /* Welcome Screen */
+        
+        .scene-welcome .scene-inner {
+            justify-content: space-around;
+            text-align: center;
+            padding: 32px 18px 8px;
+        }
+        
+        .diya-badge {
+            width: 95px;
+            height: 95px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .diya-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .flame-pulse {
+            animation: flameGlowPulse 2s infinite alternate ease-in-out;
+            transform-origin: 60px 40px;
+        }
+        
+        @keyframes flameGlowPulse {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        .flame {
+            animation: flicker 1.4s infinite alternate ease-in-out;
+            transform-origin: 60px 50px;
+        }
+        
+        @keyframes flicker {
+            0% {
+                transform: scaleY(1) rotate(-2deg);
+            }
+            50% {
+                transform: scaleY(1.08) scaleX(0.95) rotate(2deg);
+            }
+            100% {
+                transform: scaleY(0.94) rotate(-1deg);
+            }
+        }
+        
+        .auspicious-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-festive-saffron);
+            margin-bottom: 8px;
+        }
+        
+        .welcome-heading {
+            font-family: var(--font-serif-display);
+            font-size: clamp(1.45rem, 5vw, 1.95rem);
+            font-weight: 700;
+            line-height: 1.35;
+            color: var(--color-festive-maroon);
+            margin-bottom: 10px;
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #c0192d 0%, #d4af37 60%, #b8860b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .welcome-subtext {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--color-text-muted);
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        
+        .role-selection-box {
+            width: 100%;
+            max-width: 360px;
+            margin-top: 4px;
+        }
+        
+        .role-prompt-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--color-gold-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .role-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+        
+        .role-card-btn {
+            background: var(--color-bg-card);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 175, 55, 0.35);
+            border-radius: 20px;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s var(--ease-spring), border-color 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .role-card-btn:hover,
+        .role-card-btn:active {
+            transform: translateY(-3px) scale(1.02);
+            border-color: var(--color-festive-red);
+            box-shadow: 0 10px 25px rgba(192, 25, 45, 0.15);
+        }
+        
+        .role-emoji {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        
+        .role-title {
+            font-family: var(--font-serif-body);
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+        }
+        
+        .role-desc {
+            font-size: 0.65rem;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+        /* Form Styles */
+        
+        .form-card {
+            width: 100%;
+            max-width: 340px;
+            background: var(--color-bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 24px;
+            padding: 16px 16px;
+            box-shadow: var(--shadow-soft);
+            margin: auto 0;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .input-group label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            margin-bottom: 4px;
+        }
+        
+        .input-group input {
+            height: 44px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
+            background: #ffffff;
+            padding: 0 14px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--color-festive-red);
+            box-shadow: 0 0 0 3px rgba(192, 25, 45, 0.12);
+        }
+        
+        .input-hint {
+            font-size: 0.68rem;
+            color: var(--color-text-muted);
+            margin-top: 3px;
+        }
+        
+        .input-error {
+            font-size: 0.72rem;
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+        
+        .btn-text-back {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        /* Share & Waiting Screen */
+        
+        .share-box-card {
+            width: 100%;
+            max-width: 340px;
+            background: var(--color-bg-card);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 24px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .room-code-badge {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff8eb;
+            border: 1px dashed var(--color-gold-dark);
+            padding: 4px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .code-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--color-gold-dark);
+        }
+        
+        .code-val {
+            font-family: var(--font-serif-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--color-festive-maroon);
+        }
+        
+        .share-instructions {
+            font-size: 0.82rem;
+            color: var(--color-text-main);
+            margin-bottom: 12px;
+        }
+        
+        .share-actions-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .btn-share-action {
+            height: 42px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-share-action:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-share-action.whatsapp {
+            background: #25d366;
+            color: #ffffff;
+        }
+        
+        .btn-share-action.copy {
+            background: #f0eae1;
+            color: var(--color-festive-maroon);
+        }
+        
+        .waiting-radar-container {
+            position: relative;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px 0;
+        }
+        
+        .radar-circle {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(192, 25, 45, 0.4);
+            animation: radarRipple 2.4s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        .radar-circle.delay-1 {
+            animation-delay: 0.8s;
+        }
+        
+        .radar-circle.delay-2 {
+            animation-delay: 1.6s;
+        }
+        
+        @keyframes radarRipple {
+            0% {
+                transform: scale(0.3);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
+        }
+        
+        .radar-center-icon {
+            font-size: 1.4rem;
+            z-index: 2;
+        }
+        
+        .live-waiting-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-festive-maroon);
+        }
+        
+        .highlight-name {
+            color: var(--color-festive-red);
+            font-weight: 700;
+        }
+        
+        .btn-simulate-solo {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+            transition: transform 0.2s;
+        }
+        
+        .btn-simulate-solo:active {
+            transform: scale(0.96);
+        }
+        /* Buttons */
+        
+        .action-dock {
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            height: 52px;
+            border-radius: 26px;
+            border: none;
+            background: linear-gradient(135deg, #b81427 0%, #c0192d 50%, #990e1f 100%);
+            color: #ffffff;
+            font-family: var(--font-sans);
+            font-size: 1.02rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(192, 25, 45, 0.35), 0 0 0 1px rgba(255, 215, 0, 0.4);
+            transition: transform 0.2s var(--ease-spring), box-shadow 0.2s, opacity 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-25deg);
+            animation: shine 3.5s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            35% {
+                left: 140%;
+            }
+            100% {
+                left: 140%;
+            }
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        .btn-primary:disabled::before {
+            display: none;
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #dfb53f 40%, #a67c1e 100%);
+            color: #4a2800;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            height: 46px;
+            border-radius: 23px;
+            border: 1.5px solid rgba(212, 175, 55, 0.5);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-festive-maroon);
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 6px;
+        }
+        
+        .btn-gift-prominent {
+            background: linear-gradient(135deg, #f37023 0%, #ff8833 50%, #e65100 100%);
+            box-shadow: 0 8px 24px rgba(243, 112, 35, 0.4);
+            margin-bottom: 6px;
+        }
+        
+        .btn-icon,
+        .btn-arrow,
+        .btn-icon-refresh {
+            width: 18px;
+            height: 18px;
+        }
+        /* Rakhi Selection Scene */
+        
+        .scene-header {
+            text-align: center;
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .step-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--color-gold-dark);
+            margin-bottom: 4px;
+        }
+        
+        .scene-title {
+            font-family: var(--font-serif-display);
+            font-size: clamp(1.15rem, 4.2vw, 1.4rem);
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            line-height: 1.3;
+        }
+        
+        .scene-subtitle {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+        
+        .rakhi-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 360px;
+            margin: auto 0;
+        }
+        
+        .rakhi-card {
+            background: var(--color-bg-card);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 175, 55, 0.25);
+            border-radius: 20px;
+            padding: 12px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.25s var(--ease-spring), border-color 0.25s, box-shadow 0.25s;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .rakhi-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        
+        .rakhi-card.selected {
+            border-color: var(--color-festive-red);
+            background: #ffffff;
+            transform: scale(1.04);
+            box-shadow: 0 10px 25px rgba(192, 25, 45, 0.2), 0 0 0 2px var(--color-festive-red);
+        }
+        
+        .selection-check {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-festive-red);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.2s, transform 0.2s var(--ease-spring);
+        }
+        
+        .rakhi-card.selected .selection-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .rakhi-graphic {
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            transition: transform 0.3s var(--ease-spring);
+        }
+        
+        .rakhi-card.selected .rakhi-graphic {
+            transform: scale(1.1);
+            filter: drop-shadow(0 6px 12px rgba(212, 175, 55, 0.4));
+        }
+        
+        .rakhi-info {
+            text-align: center;
+            width: 100%;
+        }
+        
+        .rakhi-name {
+            display: block;
+            font-family: var(--font-serif-body);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+        }
+        
+        .rakhi-tag {
+            display: block;
+            font-size: 0.68rem;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+        
+        .brother-waiting-hint {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--color-festive-maroon);
+            text-align: center;
+            margin-top: 4px;
+        }
+        /* Hand & Wrist Tying Scene */
+        
+        .tie-instruction-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: var(--shadow-soft);
+            z-index: 20;
+        }
+        
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-festive-red);
+            animation: pulseDot 1.6s infinite;
+        }
+        
+        @keyframes pulseDot {
+            0% {
+                box-shadow: 0 0 0 0 rgba(192, 25, 45, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(192, 25, 45, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(192, 25, 45, 0);
+            }
+        }
+        
+        .tie-instruction-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-festive-maroon);
+        }
+        
+        .hand-stage-container {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+        
+        .brother-arm-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+        }
+        
+        .brother-arm-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .wrist-target-zone {
+            position: absolute;
+            top: 55%;
+            left: 51.5%;
+            width: 88px;
+            height: 88px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 15;
+        }
+        
+        .target-glow-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2.5px dashed rgba(212, 175, 55, 0.6);
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
+            animation: rotateGlow 8s linear infinite, targetPulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes rotateGlow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes targetPulse {
+            0% {
+                transform: scale(0.92);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.12);
+                opacity: 0.9;
+            }
+        }
+        
+        .wrist-target-zone.near-active .target-glow-ring {
+            border-color: var(--color-festive-red);
+            background: radial-gradient(circle, rgba(192, 25, 45, 0.4) 0%, transparent 80%);
+            transform: scale(1.25);
+        }
+        
+        .target-center-pin {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.75;
+        }
+        
+        .target-hint-icon {
+            font-size: 1.1rem;
+        }
+        
+        .target-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        
+        .tied-rakhi-anchor {
+            position: absolute;
+            top: 55%;
+            left: 51.5%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: 18;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s var(--ease-spring), opacity 0.3s;
+        }
+        
+        .tied-rakhi-anchor.snapped {
+            transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
+            opacity: 1;
+        }
+        /* Bottom Trays */
+        
+        .drag-source-tray,
+        .brother-live-view-tray {
+            width: 100%;
+            padding-bottom: 4px;
+            z-index: 25;
+        }
+        
+        .tray-backdrop {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 22px;
+            padding: 10px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--shadow-elevated);
+        }
+        
+        .tray-label {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: 6px;
+        }
+        
+        .draggable-rakhi-container {
+            position: relative;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            touch-action: none;
+            z-index: 30;
+            transition: transform 0.3s var(--ease-spring);
+        }
+        
+        .draggable-rakhi-container:active,
+        .draggable-rakhi-container.dragging {
+            cursor: grabbing;
+            transform: scale(1.15);
+            filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
+            z-index: 100;
+        }
+        
+        .draggable-rakhi-container.returning {
+            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .rakhi-drag-svg-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .rakhi-drag-svg-wrapper svg {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .drag-hint-pulse {
+            position: absolute;
+            bottom: -6px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--color-festive-red);
+            background: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: bounceHint 1.8s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes bounceHint {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+        
+        .draggable-rakhi-container.dragging .drag-hint-pulse {
+            display: none;
+        }
+        
+        .live-indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-festive-red);
+            animation: pulseDot 1.4s infinite;
+            margin-bottom: 4px;
+        }
+        
+        .brother-live-status-text {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--color-festive-maroon);
+        }
+        /* Celebration Scene */
+        
+        .celebration-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .celebration-content {
+            justify-content: space-between;
+            text-align: center;
+            padding: 16px 16px 8px;
+            z-index: 10;
+        }
+        
+        .celebration-header {
+            margin-top: 0;
+        }
+        
+        .celebration-shloka {
+            font-family: var(--font-serif-body);
+            font-size: 0.78rem;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: var(--color-gold-dark);
+            margin-bottom: 2px;
+        }
+        
+        .celebration-title {
+            font-family: var(--font-serif-display);
+            font-size: clamp(1.35rem, 4.6vw, 1.75rem);
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--color-festive-maroon);
+        }
+        
+        .bond-names-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 3px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+        }
+        
+        .name-pill {
+            font-family: var(--font-serif-body);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+        }
+        
+        .bond-heart {
+            animation: heartBeat 1.2s infinite;
+        }
+        
+        .heart-pulse {
+            display: inline-block;
+            animation: heartBeat 1.2s infinite;
+        }
+        
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.25);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.15);
+            }
+        }
+        
+        .celebration-hand-stage {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin: 4px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .celebration-sunburst {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(192, 25, 45, 0.12) 50%, transparent 75%);
+            animation: rotateGlow 18s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .celebration-arm-card {
+            position: relative;
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid rgba(212, 175, 55, 0.45);
+            border-radius: 24px;
+            padding: 8px 10px 4px;
+            box-shadow: 0 15px 35px rgba(122, 15, 29, 0.12), 0 0 25px rgba(212, 175, 55, 0.25);
+            z-index: 2;
+            animation: floatHandCard 4s infinite ease-in-out;
+        }
+        
+        @keyframes floatHandCard {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .celebration-arm-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .celebration-arm-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .celebration-tied-rakhi {
+            position: absolute;
+            top: 55%;
+            left: 51.5%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%) rotate(-3deg);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rakhiGlowPulse 2.5s infinite alternate ease-in-out;
+        }
+        
+        .tied-wrist-thread-band {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 94px;
+            border-radius: 10px;
+            background: repeating-linear-gradient(45deg, #c0192d, #c0192d 4px, #ffd56b 4px, #ffd56b 8px);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .tied-wrapper-graphic {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        
+        .tied-wrapper-graphic svg {
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+        }
+        
+        @keyframes rakhiGlowPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+                filter: drop-shadow(0 6px 12px rgba(122, 15, 29, 0.35));
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.08) rotate(-3deg);
+                filter: drop-shadow(0 8px 20px rgba(212, 175, 55, 0.65));
+            }
+        }
+        
+        .tied-badge-pill {
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 3px 12px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            z-index: 3;
+        }
+        
+        .tied-badge-icon {
+            font-size: 0.8rem;
+        }
+        
+        .tied-badge-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            letter-spacing: 0.5px;
+        }
+        
+        .quote-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 16px;
+            padding: 10px 16px;
+            box-shadow: var(--shadow-soft);
+            max-width: 340px;
+            margin: 2px auto;
+        }
+        
+        .quote-mark {
+            font-family: var(--font-serif-display);
+            font-size: 1.6rem;
+            line-height: 1;
+            color: rgba(212, 175, 55, 0.5);
+            position: absolute;
+            top: 2px;
+            left: 8px;
+        }
+        
+        .quote-mark.end {
+            top: auto;
+            bottom: -10px;
+            left: auto;
+            right: 8px;
+        }
+        
+        .quote-text {
+            font-family: var(--font-serif-body);
+            font-size: 0.85rem;
+            line-height: 1.45;
+            color: var(--color-text-main);
+            font-style: italic;
+        }
+        
+        .celebration-actions-dock {
+            gap: 4px;
+        }
+        /* ==========================================================================
+       PERSISTENT FOOTER: BUY DEVELOPER A COFFEE
+       ========================================================================== */
+        
+        .app-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(252, 249, 242, 0.92);
+            backdrop-filter: blur(6px);
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            z-index: 45;
+        }
+        
+        .btn-buy-coffee-footer {
+            background: none;
+            border: none;
+            color: var(--color-festive-maroon);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 12px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        
+        .btn-buy-coffee-footer:hover,
+        .btn-buy-coffee-footer:active {
+            background: rgba(212, 175, 55, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .coffee-heart {
+            color: var(--color-festive-red);
+            display: inline-block;
+            animation: heartBeat 1.5s infinite;
+        }
+        /* UPI Gifting & Coffee Modals */
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(43, 29, 22, 0.65);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 200;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        
+        .modal-card {
+            width: 100%;
+            max-width: 360px;
+            background: var(--color-bg-card);
+            border: 2px solid rgba(212, 175, 55, 0.45);
+            border-radius: 26px;
+            padding: 22px 18px 18px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            transform: scale(1);
+            animation: modalEnter 0.35s var(--ease-spring);
+        }
+        
+        @keyframes modalEnter {
+            0% {
+                transform: scale(0.85) translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-gift-icon {
+            font-size: 2.5rem;
+            margin-bottom: 6px;
+        }
+        
+        .modal-gift-icon.bounce {
+            animation: heartBeat 1.2s infinite;
+        }
+        
+        .modal-header {
+            margin-bottom: 10px;
+        }
+        
+        .modal-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            background: rgba(243, 112, 35, 0.15);
+            color: var(--color-festive-saffron);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .modal-badge.coffee-badge {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--color-gold-dark);
+        }
+        
+        .modal-title {
+            font-family: var(--font-serif-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            line-height: 1.3;
+        }
+        
+        .modal-subtext {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            margin-top: 3px;
+        }
+        
+        .modal-actions-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+        }
+        
+        .btn-text-dismiss {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px;
+        }
+        /* UPI ID Display Pill */
+        
+        .dev-upi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff8eb;
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 12px;
+            padding: 5px 12px;
+            margin: 8px auto 14px;
+            cursor: pointer;
+        }
+        
+        .dev-upi-text {
+            font-family: monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+        }
+        
+        .dev-copy-tag {
+            font-size: 0.68rem;
+            background: rgba(212, 175, 55, 0.25);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: var(--color-gold-dark);
+            font-weight: 600;
+        }
+        
+        .developer-amount-container {
+            width: 100%;
+            text-align: left;
+            margin: 6px 0 10px;
+        }
+        
+        .dev-input-label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        
+        .custom-amount-box {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 14px;
+            padding: 0 12px;
+            height: 48px;
+        }
+        
+        .dev-amount-box {
+            border: 2px solid var(--color-gold-primary);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+        }
+        
+        .rupee-symbol {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+            margin-right: 6px;
+        }
+        
+        .custom-amount-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: var(--font-sans);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            background: transparent;
+        }
+        /* Brother Gift Shagun Chips */
+        
+        .shagun-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin: 10px 0;
+        }
+        
+        .shagun-chip {
+            height: 40px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
+            background: #ffffff;
+            color: var(--color-festive-maroon);
+            font-family: var(--font-serif-body);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .shagun-chip.selected {
+            background: linear-gradient(135deg, #c0192d, #841a1a);
+            color: #ffffff;
+            border-color: var(--color-festive-red);
+            box-shadow: 0 4px 12px rgba(192, 25, 45, 0.25);
+            transform: scale(1.04);
+        }
+        
+        .desktop-qr-container {
+            background: #fffdf9;
+            border: 1px dashed rgba(212, 175, 55, 0.5);
+            border-radius: 14px;
+            padding: 10px;
+            margin: 8px 0;
+            text-align: center;
+        }
+        
+        .qr-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: 6px;
+        }
+        
+        .upi-qr-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .gift-celebration-card {
+            border-color: var(--color-festive-saffron);
+            box-shadow: 0 20px 50px rgba(243, 112, 35, 0.25);
+        }
+        
+        .gift-announcement-title {
+            font-family: var(--font-serif-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--color-festive-maroon);
+        }
+        
+        .gift-amount-display-pill {
+            display: inline-block;
+            background: linear-gradient(135deg, #f37023, #d4af37);
+            color: #ffffff;
+            padding: 6px 24px;
+            border-radius: 20px;
+            margin: 8px auto;
+            box-shadow: 0 6px 18px rgba(243, 112, 35, 0.35);
+        }
+        
+        .received-amount-val {
+            font-family: var(--font-serif-display);
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .gift-received-subtext {
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: var(--color-text-main);
+            margin: 4px 0 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-glow glow-top"></div>
+    <div class="ambient-glow glow-bottom"></div>
+    <div class="ambient-pattern"></div>
+    <div class="floating-bokeh-container" id="bokehContainer"></div>
+
+    <!-- Sound Toggle -->
+    <button class="audio-toggle" id="audioToggle" aria-label="Toggle festive sound" title="Toggle Sound">
+    <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg class="icon-sound-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </button>
+
+    <!-- Realtime Connection Status Pill -->
+    <div class="connection-status-pill" id="connectionStatus">
+        <span class="status-dot"></span>
+        <span class="status-text" id="statusText">Ready</span>
+    </div>
+
+    <main class="app-stage" id="appStage">
+
+        <!-- SCREEN 1: WELCOME & ROLE SELECTION -->
+        <section class="scene scene-welcome active" id="sceneWelcome">
+            <div class="scene-inner">
+                <div class="diya-badge">
+                    <svg class="diya-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="flameGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff5b8" stop-opacity="1"/>
+                <stop offset="40%" stop-color="#ff9900" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#ff3300" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="goldPlate" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffd56b"/>
+                <stop offset="50%" stop-color="#d4af37"/>
+                <stop offset="100%" stop-color="#997217"/>
+              </linearGradient>
+            </defs>
+            <circle class="flame-pulse" cx="60" cy="40" r="28" fill="url(#flameGlow)" />
+            <path class="flame" d="M60 22 C64 30 70 38 66 48 C63 54 57 54 54 48 C50 38 56 30 60 22 Z" fill="#ffb703" />
+            <path class="flame-core" d="M60 30 C62 35 65 40 63 46 C61 49 59 49 57 46 C55 40 58 35 60 30 Z" fill="#ffffff" />
+            <path d="M25 65 C25 88 95 88 95 65 C85 65 78 68 60 68 C42 68 35 65 25 65 Z" fill="url(#goldPlate)" />
+            <ellipse cx="60" cy="65" rx="35" ry="7" fill="#841a1a" />
+            <ellipse cx="60" cy="64" rx="28" ry="4" fill="#c0192d" />
+            <path d="M45 82 C45 88 75 88 75 82 Z" fill="#997217" />
+          </svg>
+                </div>
+
+                <div class="welcome-text-container">
+                    <p class="auspicious-tag">✨ Long-Distance Rakhi ✨</p>
+                    <h1 class="welcome-heading">
+                        A Rakhi, A Promise,<br>
+                        <span class="gold-gradient-text">A Bond Forever</span> ❤️
+                    </h1>
+                    <p class="welcome-subtext">
+                        Miles apart, but together in spirit. Tie a Rakhi live on your brother’s screen in real time.
+                    </p>
+                </div>
+
+                <div class="role-selection-box">
+                    <p class="role-prompt-label">Who are you joining as?</p>
+                    <div class="role-buttons-grid">
+                        <button class="role-card-btn" id="btnRoleSister">
+              <span class="role-emoji">👩</span>
+              <span class="role-title">I am the Sister</span>
+              <span class="role-desc">Create room & tie Rakhi</span>
+            </button>
+                        <button class="role-card-btn" id="btnRoleBrother">
+              <span class="role-emoji">👨</span>
+              <span class="role-title">I am the Brother</span>
+              <span class="role-desc">Join & receive Rakhi</span>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SISTER STEP 1: CREATE RAKHI ROOM -->
+        <section class="scene scene-create-room" id="sceneCreateRoom">
+            <div class="scene-inner">
+                <header class="scene-header">
+                    <p class="step-badge">Sister's Setup</p>
+                    <h2 class="scene-title">Create a Rakhi Room ❤️</h2>
+                    <p class="scene-subtitle">Enter your details to start the sacred bond ritual</p>
+                </header>
+
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="sisterNameInput">Your Name (Sister)</label>
+                        <input type="text" id="sisterNameInput" placeholder="e.g. Pooja" maxlength="24" value="Pooja" autocomplete="off" />
+                    </div>
+                    <div class="input-group">
+                        <label for="brotherNameInput">Brother's Name</label>
+                        <input type="text" id="brotherNameInput" placeholder="e.g. Rahul" maxlength="24" value="Rahul" autocomplete="off" />
+                    </div>
+                    <div class="input-group">
+                        <label for="sisterUpiInput">Where should your brother send your gift? 💝</label>
+                        <input type="text" id="sisterUpiInput" placeholder="e.g. pooja@okhdfcbank or 9876543210@paytm" maxlength="64" value="sister@upi" autocomplete="off" />
+                        <span class="input-hint">Your UPI ID (Google Pay, PhonePe, Paytm, BHIM)</span>
+                        <span class="input-error hidden" id="upiError">Please enter a valid UPI ID (e.g. name@upi)</span>
+                    </div>
+                </div>
+
+                <div class="action-dock">
+                    <button class="btn-primary" id="btnCreateRoomSubmit">
+            <span class="btn-text">Create Rakhi Room ❤️</span>
+            <span class="btn-sparkle">✨</span>
+          </button>
+                    <button class="btn-text-back" id="btnBackFromCreate">← Back to Role</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SISTER STEP 2 & 3: INVITE & WAITING SCREEN -->
+        <section class="scene scene-waiting" id="sceneWaitingBrother">
+            <div class="scene-inner">
+                <header class="scene-header">
+                    <div class="pulsing-heart-icon" style="font-size: 2rem; margin-bottom: 4px;">💌</div>
+                    <h2 class="scene-title">Send this invite to your brother ❤️</h2>
+                    <p class="scene-subtitle">He will join you live on his own phone</p>
+                </header>
+
+                <div class="share-box-card">
+                    <div class="room-code-badge">
+                        <span class="code-label">ROOM CODE</span>
+                        <span class="code-val" id="displayRoomCode">------</span>
+                    </div>
+
+                    <p class="share-instructions">
+                        Share this private link with <strong id="waitingBrotherName">your brother</strong>:
+                    </p>
+
+                    <div class="share-actions-row">
+                        <button class="btn-share-action whatsapp" id="btnShareWhatsApp">
+              <span>💬 WhatsApp</span>
+            </button>
+                        <button class="btn-share-action copy" id="btnCopyLink">
+              <span id="copyBtnText">📋 Copy Link</span>
+            </button>
+                    </div>
+                </div>
+
+                <div class="waiting-radar-container">
+                    <div class="radar-circle"></div>
+                    <div class="radar-circle delay-1"></div>
+                    <div class="radar-circle delay-2"></div>
+                    <div class="radar-center-icon">📱</div>
+                </div>
+
+                <p class="live-waiting-text" id="liveWaitingStatus">
+                    Waiting for <span class="highlight-name" id="waitingBrotherNameSpan">him</span> to open link...
+                </p>
+
+                <button class="btn-simulate-solo" id="btnSimulateJoinSolo">
+          ⚡ Simulate Brother Joining (Instant Test)
+        </button>
+
+                <div class="action-dock">
+                    <p class="auto-connect-hint" style="font-size: 0.72rem; color: #8c6a16; margin-top: 6px;">
+                        ⚡ Or open the link in a second browser tab to test two-device live sync!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BROTHER STEP: WELCOME & READY TO JOIN -->
+        <section class="scene scene-brother-join" id="sceneBrotherJoin">
+            <div class="scene-inner">
+                <div class="diya-badge">
+                    <div style="font-size: 2.8rem; animation: heartBeat 1.2s infinite;">❤️</div>
+                </div>
+
+                <div class="welcome-text-container">
+                    <p class="auspicious-tag">✨ Sacred Invitation ✨</p>
+                    <h1 class="welcome-heading">
+                        Your sister <span class="gold-gradient-text" id="brotherWelcomeSisterName">Sister</span> is waiting to tie you a Rakhi ❤️
+                    </h1>
+                    <p class="welcome-subtext">
+                        Join the live synchronized room and experience the sacred thread being tied live on your screen.
+                    </p>
+                </div>
+
+                <div class="brother-join-info-card" style="background: var(--color-bg-card); border: 1px solid rgba(212,175,55,0.3); border-radius: 18px; padding: 10px 18px; margin: 8px 0; text-align: center;">
+                    <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.15); color: #065f46; padding: 2px 8px; border-radius: 8px;">LIVE SYNC READY</span>
+                    <p style="font-size: 0.88rem; color: var(--color-text-main); margin-top: 4px;">Connected to Room <strong id="brotherRoomCodeDisplay">------</strong></p>
+                </div>
+
+                <div class="action-dock">
+                    <button class="btn-primary" id="btnBrotherReady">
+            <span class="btn-text">I'm Ready 🫶</span>
+            <span class="btn-sparkle">✨</span>
+          </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE: CHOOSE A RAKHI -->
+        <section class="scene scene-select" id="sceneSelect">
+            <div class="scene-inner">
+                <header class="scene-header">
+                    <p class="step-badge" id="selectStepBadge">Step 1 of 2</p>
+                    <h2 class="scene-title" id="selectSceneTitle">Choose a Rakhi for your brother ✨</h2>
+                    <p class="scene-subtitle" id="selectSceneSubtitle">Select the sacred thread that matches his spirit</p>
+                </header>
+
+                <div class="rakhi-showcase-grid" id="rakhiList">
+                    <div class="rakhi-card" data-rakhi-id="lotus" tabindex="0">
+                        <div class="rakhi-card-inner">
+                            <div class="selection-check">✓</div>
+                            <div class="rakhi-graphic" id="svgHolder-lotus"></div>
+                            <div class="rakhi-info">
+                                <span class="rakhi-name">Swarna Kamal</span>
+                                <span class="rakhi-tag">Kundan & Pure Gold</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rakhi-card" data-rakhi-id="peacock" tabindex="0">
+                        <div class="rakhi-card-inner">
+                            <div class="selection-check">✓</div>
+                            <div class="rakhi-graphic" id="svgHolder-peacock"></div>
+                            <div class="rakhi-info">
+                                <span class="rakhi-name">Mayura Gem</span>
+                                <span class="rakhi-tag">Royal Meenakari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rakhi-card" data-rakhi-id="rudraksha" tabindex="0">
+                        <div class="rakhi-card-inner">
+                            <div class="selection-check">✓</div>
+                            <div class="rakhi-graphic" id="svgHolder-rudraksha"></div>
+                            <div class="rakhi-info">
+                                <span class="rakhi-name">Rudra Raksha</span>
+                                <span class="rakhi-tag">Sacred OM & Rudraksha</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rakhi-card" data-rakhi-id="pearl" tabindex="0">
+                        <div class="rakhi-card-inner">
+                            <div class="selection-check">✓</div>
+                            <div class="rakhi-graphic" id="svgHolder-pearl"></div>
+                            <div class="rakhi-info">
+                                <span class="rakhi-name">Moti Zari</span>
+                                <span class="rakhi-tag">Ivory Pearls & Silk</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-dock">
+                    <button class="btn-primary" id="btnContinueToTie" disabled>
+            <span class="btn-text">Continue to Tie</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+                    <p class="brother-waiting-hint hidden" id="brotherSelectionHint">
+                        ⏳ Waiting for your sister to pick a Rakhi...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE: INTERACTIVE TYING ON WRIST -->
+        <section class="scene scene-tie" id="sceneTie">
+            <div class="scene-inner full-height-stage">
+                <div class="tie-instruction-banner" id="tieInstructionBanner">
+                    <div class="pulse-indicator"></div>
+                    <p class="tie-instruction-text" id="tieInstructionText">Now tie the Rakhi on his wrist 🤍</p>
+                </div>
+
+                <div class="hand-stage-container" id="handStage">
+                    <div class="brother-arm-wrapper" id="brotherArmWrapper">
+                        <svg class="brother-arm-svg" viewBox="0 0 460 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="skinArmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#dfa07a"/>
+                  <stop offset="35%" stop-color="#eec3a4"/>
+                  <stop offset="70%" stop-color="#d6936d"/>
+                  <stop offset="100%" stop-color="#ba734d"/>
+                </linearGradient>
+                <linearGradient id="skinHandGrad" x1="0%" y1="0%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#e8b998"/>
+                  <stop offset="50%" stop-color="#f2cfb6"/>
+                  <stop offset="100%" stop-color="#db9973"/>
+                </linearGradient>
+                <filter id="handShadow" x="-10%" y="-10%" width="130%" height="130%">
+                  <feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#552211" flood-opacity="0.16"/>
+                </filter>
+              </defs>
+
+              <g filter="url(#handShadow)">
+                <path d="M-20,95 C40,92 110,95 170,105 C205,111 230,116 260,110 C290,102 330,95 385,110 C415,118 435,140 435,165 C435,190 405,215 365,220 C320,225 285,210 250,205 C210,200 160,215 100,220 C40,225 -20,220 -20,220 Z" fill="url(#skinArmGrad)" />
+                <path d="M190,115 C210,125 210,185 190,195" stroke="#ba734d" stroke-width="2" stroke-linecap="round" opacity="0.3" fill="none" />
+                <path d="M150,135 C175,140 220,140 245,135" stroke="#fce5d4" stroke-width="3" stroke-linecap="round" opacity="0.4" fill="none" />
+                <path d="M260,110 C285,98 320,90 355,100 C390,108 425,125 435,155 C442,175 425,200 385,215 C345,225 300,215 260,205 Z" fill="url(#skinHandGrad)" />
+                <path d="M285,120 C305,110 330,112 345,125 C335,135 315,138 290,135" fill="#e2ab86" opacity="0.4"/>
+                <path d="M345,125 C380,128 410,140 420,155 C410,165 375,160 345,150" fill="#db9d77" opacity="0.35"/>
+                <path d="M350,150 C385,155 415,168 415,182 C395,195 365,190 340,175" fill="#ce8c64" opacity="0.3"/>
+                <path d="M340,178 C368,188 395,198 395,208 C375,215 350,210 330,198" fill="#bf7a50" opacity="0.25"/>
+                <path d="M-20,80 L25,83 C20,140 20,175 25,232 L-20,235 Z" fill="#991b1b" />
+                <path d="M23,83 C28,140 28,175 23,232" stroke="#d4af37" stroke-width="5" fill="none" />
+                <path d="M16,83 C21,140 21,175 16,232" stroke="#ffd56b" stroke-width="1.5" stroke-dasharray="3,3" fill="none" />
+              </g>
+            </svg>
+
+                        <!-- Drop Target Zone (51.5%, 55%) -->
+                        <div class="wrist-target-zone" id="wristDropTarget">
+                            <div class="target-glow-ring"></div>
+                            <div class="target-center-pin">
+                                <span class="target-hint-icon">🎯</span>
+                                <span class="target-label">Wrist</span>
+                            </div>
+                        </div>
+
+                        <!-- Tied Rakhi on Wrist -->
+                        <div class="tied-rakhi-anchor" id="tiedRakhiAnchor"></div>
+                    </div>
+                </div>
+
+                <!-- Sister's Draggable Dock Tray -->
+                <div class="drag-source-tray" id="dragSourceTray">
+                    <div class="tray-backdrop">
+                        <span class="tray-label" id="dragTrayLabel">Touch & drag the Rakhi to his wrist</span>
+                        <div class="draggable-rakhi-container" id="draggableRakhi" style="touch-action: none;">
+                            <div class="rakhi-drag-svg-wrapper" id="draggableSvgHolder"></div>
+                            <div class="drag-hint-pulse">👆 Drag Me</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brother's Live Status Tray -->
+                <div class="brother-live-view-tray hidden" id="brotherLiveTray">
+                    <div class="tray-backdrop">
+                        <div class="live-indicator-dot"></div>
+                        <span class="brother-live-status-text" id="brotherLiveStatusText">
+              Your sister is tying the Rakhi right now... 🤍
+            </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE: FINAL CELEBRATION -->
+        <section class="scene scene-celebration" id="sceneCelebration">
+            <canvas class="celebration-canvas" id="celebrationCanvas"></canvas>
+
+            <div class="scene-inner celebration-content">
+                <header class="celebration-header">
+                    <p class="celebration-shloka">✨ रक्षाबंधनस्य हार्दाः शुभाशयाः ✨</p>
+                    <h1 class="celebration-title">
+                        Happy Raksha Bandhan <span class="heart-pulse">❤️</span>
+                    </h1>
+                    <div class="bond-names-badge" id="celebBondNames">
+                        <span class="name-pill" id="celebSisterName">Sister</span>
+                        <span class="bond-heart">❤️</span>
+                        <span class="name-pill" id="celebBrotherName">Brother</span>
+                    </div>
+                </header>
+
+                <!-- BROTHER'S HAND WITH TIED RAKHI -->
+                <div class="celebration-hand-stage" id="celebrationCaptureStage">
+                    <div class="celebration-sunburst"></div>
+
+                    <div class="celebration-arm-card">
+                        <div class="celebration-arm-wrapper">
+                            <svg class="celebration-arm-svg" viewBox="0 0 460 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="celebSkinArmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#dfa07a"/>
+                    <stop offset="35%" stop-color="#eec3a4"/>
+                    <stop offset="70%" stop-color="#d6936d"/>
+                    <stop offset="100%" stop-color="#ba734d"/>
+                  </linearGradient>
+                  <linearGradient id="celebSkinHandGrad" x1="0%" y1="0%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#e8b998"/>
+                    <stop offset="50%" stop-color="#f2cfb6"/>
+                    <stop offset="100%" stop-color="#db9973"/>
+                  </linearGradient>
+                  <filter id="celebHandShadow" x="-10%" y="-10%" width="130%" height="130%">
+                    <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#552211" flood-opacity="0.18"/>
+                  </filter>
+                </defs>
+
+                <g filter="url(#celebHandShadow)">
+                  <path d="M-20,95 C40,92 110,95 170,105 C205,111 230,116 260,110 C290,102 330,95 385,110 C415,118 435,140 435,165 C435,190 405,215 365,220 C320,225 285,210 250,205 C210,200 160,215 100,220 C40,225 -20,220 -20,220 Z" fill="url(#celebSkinArmGrad)" />
+                  <path d="M190,115 C210,125 210,185 190,195" stroke="#ba734d" stroke-width="2" stroke-linecap="round" opacity="0.3" fill="none" />
+                  <path d="M150,135 C175,140 220,140 245,135" stroke="#fce5d4" stroke-width="3" stroke-linecap="round" opacity="0.4" fill="none" />
+                  <path d="M260,110 C285,98 320,90 355,100 C390,108 425,125 435,155 C442,175 425,200 385,215 C345,225 300,215 260,205 Z" fill="url(#celebSkinHandGrad)" />
+                  <path d="M285,120 C305,110 330,112 345,125 C335,135 315,138 290,135" fill="#e2ab86" opacity="0.4"/>
+                  <path d="M345,125 C380,128 410,140 420,155 C410,165 375,160 345,150" fill="#db9d77" opacity="0.35"/>
+                  <path d="M350,150 C385,155 415,168 415,182 C395,195 365,190 340,175" fill="#ce8c64" opacity="0.3"/>
+                  <path d="M340,178 C368,188 395,198 395,208 C375,215 350,210 330,198" fill="#bf7a50" opacity="0.25"/>
+                  <path d="M-20,80 L25,83 C20,140 20,175 25,232 L-20,235 Z" fill="#991b1b" />
+                  <path d="M23,83 C28,140 28,175 23,232" stroke="#d4af37" stroke-width="5" fill="none" />
+                  <path d="M16,83 C21,140 21,175 16,232" stroke="#ffd56b" stroke-width="1.5" stroke-dasharray="3,3" fill="none" />
+                  <ellipse cx="325" cy="155" rx="5" ry="8" fill="#c0192d" opacity="0.85" />
+                  <circle cx="325" cy="155" r="2.5" fill="#fff6d6" />
+                </g>
+              </svg>
+
+                            <div class="celebration-tied-rakhi" id="celebrationTiedRakhiAnchor"></div>
+                        </div>
+                    </div>
+
+                    <div class="tied-badge-pill">
+                        <span class="tied-badge-icon">✨</span>
+                        <span class="tied-badge-text" id="celebStatusPillText">Rakhi Tied Across Distance</span>
+                    </div>
+                </div>
+
+                <div class="quote-card">
+                    <div class="quote-mark">“</div>
+                    <p class="quote-text">
+                        Distance may separate us across oceans and cities, but our sacred bond will always remain unbreakable.
+                    </p>
+                    <div class="quote-mark end">”</div>
+                </div>
+
+                <div class="action-dock celebration-actions-dock">
+                    <button class="btn-primary btn-gift-prominent hidden" id="btnManualSendGift">
+            <span class="btn-text">Send Rakhi Gift 🎁</span>
+          </button>
+
+                    <button class="btn-secondary" id="btnShareMoment">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span class="btn-text">Share This Moment 📸</span>
+          </button>
+                    <button class="btn-primary btn-gold" id="btnRestart">
+            <svg class="btn-icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+            </svg>
+            <span class="btn-text">Tie Another Rakhi</span>
+          </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+         PERSISTENT FOOTER: BUY DEVELOPER A COFFEE
+         ====================================================================== -->
+        <footer class="app-footer">
+            <button class="btn-buy-coffee-footer" id="btnOpenCoffeeModal">
+        <span>☕ Buy a Coffee for Developer</span>
+        <span class="coffee-heart">❤️</span>
+      </button>
+        </footer>
+
+        <!-- ======================================================================
+         UPI GIFTING & COFFEE MODALS
+         ====================================================================== -->
+
+        <!-- DEVELOPER COFFEE MODAL (Open Amount UPI Input) -->
+        <div class="modal-overlay hidden" id="modalDevCoffee">
+            <div class="modal-card">
+                <div class="modal-gift-icon">☕</div>
+                <header class="modal-header">
+                    <span class="modal-badge coffee-badge">SUPPORT THE CREATOR</span>
+                    <h3 class="modal-title">Buy Developer a Coffee 💛</h3>
+                    <p class="modal-subtext">Enjoyed this experience? Feel free to support with any amount!</p>
+                </header>
+
+                <!-- Clickable Copy UPI ID Pill -->
+                <div class="dev-upi-badge" id="btnCopyDevUpi" title="Click to copy UPI ID">
+                    <span class="dev-upi-text">umakantm339-1@okicici</span>
+                    <span class="dev-copy-tag" id="devUpiCopyTag">📋 Copy</span>
+                </div>
+
+                <div class="developer-amount-container">
+                    <label for="customCoffeeAmountInput" class="dev-input-label">Enter any amount you'd like to treat ☕</label>
+                    <div class="custom-amount-box dev-amount-box">
+                        <span class="rupee-symbol">₹</span>
+                        <input type="number" id="customCoffeeAmountInput" value="50" min="1" max="100000" placeholder="Enter amount" />
+                    </div>
+                </div>
+
+                <div class="desktop-qr-container hidden" id="desktopDevQrContainer">
+                    <p class="qr-label">Scan with GPay / PhonePe / Paytm / BHIM:</p>
+                    <img class="upi-qr-image" id="devUpiQrImage" alt="Developer UPI QR" />
+                </div>
+
+                <div class="modal-actions-col">
+                    <button class="btn-primary" id="btnPayDevCoffee">
+            <span class="btn-text">Pay via UPI 🚀</span>
+          </button>
+                    <button class="btn-text-dismiss" id="btnCloseCoffeeModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. BROTHER GIFT PROMPT MODAL -->
+        <div class="modal-overlay hidden" id="modalGiftPrompt">
+            <div class="modal-card">
+                <div class="modal-gift-icon">🎁</div>
+                <h3 class="modal-title">Rakhi is not complete without a gift!</h3>
+                <p class="modal-subtext">Send some love to <strong id="promptSisterName">Sister</strong> ❤️</p>
+
+                <div class="modal-actions-col">
+                    <button class="btn-primary" id="btnOpenAmountSelection">
+            <span class="btn-text">Send a Gift 🎁</span>
+          </button>
+                    <button class="btn-text-dismiss" id="btnDismissGiftPrompt">Maybe later</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. BROTHER AMOUNT SELECTION MODAL -->
+        <div class="modal-overlay hidden" id="modalAmountSelection">
+            <div class="modal-card">
+                <header class="modal-header">
+                    <span class="modal-badge">SHAGUN SELECTION</span>
+                    <h3 class="modal-title">Choose Gift Amount 💝</h3>
+                    <p class="modal-subtext">Auspicious blessings for <strong id="amountSisterName">Sister</strong></p>
+                </header>
+
+                <div class="shagun-chips-grid">
+                    <button class="shagun-chip gift-chip" data-amount="51">₹51</button>
+                    <button class="shagun-chip gift-chip selected" data-amount="101">₹101</button>
+                    <button class="shagun-chip gift-chip" data-amount="501">₹501</button>
+                    <button class="shagun-chip gift-chip" data-amount="1100">₹1100</button>
+                </div>
+
+                <div class="custom-amount-box">
+                    <span class="rupee-symbol">₹</span>
+                    <input type="number" id="customAmountInput" value="101" min="1" max="100000" placeholder="Custom" />
+                </div>
+
+                <div class="desktop-qr-container hidden" id="desktopQrContainer">
+                    <p class="qr-label">Scan with any UPI App (GPay, PhonePe, Paytm, BHIM):</p>
+                    <img class="upi-qr-image" id="upiQrImage" alt="UPI QR Code" />
+                </div>
+
+                <div class="modal-actions-col">
+                    <button class="btn-primary" id="btnPayViaUpi">
+            <span class="btn-text">Pay via UPI 🚀</span>
+          </button>
+                    <button class="btn-text-dismiss" id="btnCancelAmount">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. BROTHER PAYMENT CONFIRMATION MODAL -->
+        <div class="modal-overlay hidden" id="modalPaymentConfirm">
+            <div class="modal-card">
+                <div class="modal-gift-icon">💳</div>
+                <h3 class="modal-title">Payment complete? ❤️</h3>
+                <p class="modal-subtext">Did you complete the transfer to <strong id="confirmSisterName">Sister</strong>?</p>
+
+                <div class="modal-actions-col">
+                    <button class="btn-primary" id="btnConfirmGiftSent">
+            <span class="btn-text">Yes, Gift Sent 🎁</span>
+          </button>
+                    <button class="btn-text-dismiss" id="btnNotYetPaid">Not Yet</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SISTER GIFT RECEIVED CELEBRATION MODAL -->
+        <div class="modal-overlay hidden" id="modalSisterGiftCelebration">
+            <div class="modal-card gift-celebration-card">
+                <div class="modal-gift-icon bounce">🎁</div>
+                <h2 class="gift-announcement-title">Rakhi Gift Received! 💖</h2>
+                <div class="gift-amount-display-pill">
+                    <span class="received-amount-val" id="receivedGiftAmount">₹101</span>
+                </div>
+                <p class="gift-received-subtext">
+                    <strong id="receivedBrotherName">Your brother</strong> just sent you a loving Rakhi gift with all his heart!
+                </p>
+                <div class="modal-actions-col">
+                    <button class="btn-primary btn-gold" id="btnCloseSisterGiftModal">
+            <span class="btn-text">Thank You Bhai! 🫶</span>
+          </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        'use strict';
+
+        /* Rakhi Vector Artwork */
+        const RAKHI_DATA = {
+            lotus: {
+                id: 'lotus',
+                name: 'Swarna Kamal',
+                tag: 'Kundan & Pure Gold',
+                svg: `
+          <svg viewBox="0 0 100 100" class="rakhi-svg-item" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goldG1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fff0aa"/><stop offset="50%" stop-color="#d4af37"/><stop offset="100%" stop-color="#8a6914"/>
+              </linearGradient>
+              <radialGradient id="rubyCore" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ff4d6d"/><stop offset="70%" stop-color="#c0192d"/><stop offset="100%" stop-color="#59000a"/>
+              </radialGradient>
+            </defs>
+            <path d="M-10,50 Q25,38 50,50 Q75,62 110,50" stroke="#c0192d" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M-10,50 Q25,62 50,50 Q75,38 110,50" stroke="#ffd56b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="4,2"/>
+            <circle cx="20" cy="50" r="4.5" fill="url(#goldG1)"/>
+            <circle cx="80" cy="50" r="4.5" fill="url(#goldG1)"/>
+            <circle cx="28" cy="50" r="3" fill="#c0192d"/>
+            <circle cx="72" cy="50" r="3" fill="#c0192d"/>
+            <g transform="translate(50,50)">
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(0)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(45)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(90)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(135)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(180)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(225)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(270)"/>
+              <path d="M0,0 L-7,-22 C-3,-28 3,-28 7,-22 Z" fill="url(#goldG1)" transform="rotate(315)"/>
+              <circle cx="0" cy="0" r="16" fill="#841a1a"/>
+              <circle cx="0" cy="0" r="14" fill="url(#goldG1)"/>
+              <circle cx="0" cy="0" r="10" fill="url(#rubyCore)"/>
+              <circle cx="-3" cy="-3" r="2.5" fill="#ffffff" opacity="0.75"/>
+            </g>
+          </svg>
+        `
+            },
+            peacock: {
+                id: 'peacock',
+                name: 'Mayura Gem',
+                tag: 'Royal Meenakari',
+                svg: `
+          <svg viewBox="0 0 100 100" class="rakhi-svg-item" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="peacockTeal" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00f5d4"/><stop offset="50%" stop-color="#0b6b44"/><stop offset="100%" stop-color="#053320"/>
+              </linearGradient>
+              <linearGradient id="sapphireGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4cc9f0"/><stop offset="50%" stop-color="#183e74"/><stop offset="100%" stop-color="#0b1b36"/>
+              </linearGradient>
+            </defs>
+            <path d="M-10,50 Q25,35 50,50 Q75,65 110,50" stroke="#183e74" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M-10,50 Q25,65 50,50 Q75,35 110,50" stroke="#f37023" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="18" cy="50" r="4.5" fill="#fdfbf7" stroke="#d4af37" stroke-width="1.5"/>
+            <circle cx="82" cy="50" r="4.5" fill="#fdfbf7" stroke="#d4af37" stroke-width="1.5"/>
+            <g transform="translate(50,50)">
+              <circle cx="0" cy="0" r="23" fill="#d4af37"/>
+              <circle cx="0" cy="0" r="21" fill="#fdf8f0"/>
+              <ellipse cx="0" cy="0" rx="17" ry="19" fill="url(#sapphireGrad)"/>
+              <ellipse cx="0" cy="2" rx="12" ry="14" fill="url(#peacockTeal)"/>
+              <ellipse cx="0" cy="4" rx="7" ry="9" fill="#ffd166"/>
+              <ellipse cx="0" cy="5" rx="4" ry="5" fill="#183e74"/>
+              <circle cx="-2" cy="2" r="1.5" fill="#ffffff"/>
+            </g>
+          </svg>
+        `
+            },
+            rudraksha: {
+                id: 'rudraksha',
+                name: 'Rudra Raksha',
+                tag: 'Sacred OM & Rudraksha',
+                svg: `
+          <svg viewBox="0 0 100 100" class="rakhi-svg-item" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="rudraBead" cx="40%" cy="40%" r="50%">
+                <stop offset="0%" stop-color="#99582a"/><stop offset="60%" stop-color="#6f1d1b"/><stop offset="100%" stop-color="#43281c"/>
+              </radialGradient>
+              <linearGradient id="sacredGold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffe6a7"/><stop offset="50%" stop-color="#d4af37"/><stop offset="100%" stop-color="#99582a"/>
+              </linearGradient>
+            </defs>
+            <path d="M-10,50 L110,50" stroke="#f37023" stroke-width="4.5" stroke-linecap="round"/>
+            <path d="M-10,50 L110,50" stroke="#c0192d" stroke-width="2" stroke-dasharray="3,3"/>
+            <circle cx="16" cy="50" r="5.5" fill="url(#rudraBead)"/>
+            <circle cx="26" cy="50" r="3.5" fill="url(#sacredGold)"/>
+            <circle cx="84" cy="50" r="5.5" fill="url(#rudraBead)"/>
+            <circle cx="74" cy="50" r="3.5" fill="url(#sacredGold)"/>
+            <g transform="translate(50,50)">
+              <circle cx="0" cy="0" r="23" fill="url(#sacredGold)"/>
+              <circle cx="0" cy="0" r="19" fill="#7a0f1d"/>
+              <circle cx="0" cy="0" r="17" fill="#43281c"/>
+              <path d="M-5,-6 C-3,-9 2,-9 4,-6 C6,-4 6,-1 3,1 C6,3 7,7 4,10 C1,12 -5,11 -7,7 L-4,6 C-3,8 0,9 3,8 C5,6 4,4 2,4 L-1,4 L-1,2 L2,2 C4,2 4,-1 2,-3 C0,-4 -3,-3 -4,-1 Z M4,-4 C7,-5 10,-2 10,2 L8,2 C8,0 6,-2 4,-2 Z M-3,-10 C-1,-11 2,-11 4,-10" 
+                    stroke="#ffd56b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <circle cx="2" cy="-9" r="1" fill="#ffd56b"/>
+            </g>
+          </svg>
+        `
+            },
+            pearl: {
+                id: 'pearl',
+                name: 'Moti Zari',
+                tag: 'Ivory Pearls & Silk',
+                svg: `
+          <svg viewBox="0 0 100 100" class="rakhi-svg-item" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="pearlShine" cx="35%" cy="35%" r="50%">
+                <stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#f4ebe1"/><stop offset="100%" stop-color="#d3c5b4"/>
+              </radialGradient>
+            </defs>
+            <path d="M-10,50 Q25,40 50,50 Q75,60 110,50" stroke="#e63946" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M-10,50 Q25,60 50,50 Q75,40 110,50" stroke="#d4af37" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="14" cy="50" r="3.5" fill="url(#pearlShine)"/>
+            <circle cx="22" cy="50" r="4.5" fill="url(#pearlShine)"/>
+            <circle cx="30" cy="50" r="3.5" fill="url(#pearlShine)"/>
+            <circle cx="70" cy="50" r="3.5" fill="url(#pearlShine)"/>
+            <circle cx="78" cy="50" r="4.5" fill="url(#pearlShine)"/>
+            <circle cx="86" cy="50" r="3.5" fill="url(#pearlShine)"/>
+            <g transform="translate(50,50)">
+              <circle cx="0" cy="0" r="22" fill="#d4af37" opacity="0.6"/>
+              <circle cx="0" cy="-12" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="10.4" cy="-6" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="10.4" cy="6" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="0" cy="12" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="-10.4" cy="6" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="-10.4" cy="-6" r="4.5" fill="url(#pearlShine)"/>
+              <circle cx="0" cy="0" r="6.5" fill="#c0192d"/>
+              <circle cx="0" cy="0" r="3" fill="#d4af37"/>
+            </g>
+          </svg>
+        `
+            }
+        };
+
+        /* Web Audio Synthesizer */
+        class FestiveSoundManager {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+            initContext() {
+                try {
+                    if (!this.ctx) {
+                        const AudioContext = window.AudioContext || window.webkitAudioContext;
+                        if (AudioContext) this.ctx = new AudioContext();
+                    }
+                    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+                } catch (e) {}
+            }
+            playTone(freq, type = 'sine', duration = 0.35, delay = 0, gainLevel = 0.25) {
+                if (!this.enabled) return;
+                this.initContext();
+                if (!this.ctx) return;
+                try {
+                    const startTime = this.ctx.currentTime + delay;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    gain.gain.setValueAtTime(0.001, startTime);
+                    gain.gain.exponentialRampToValueAtTime(gainLevel, startTime + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + duration);
+                } catch (e) {}
+            }
+            playTap() {
+                this.playTone(523.25, 'sine', 0.2, 0, 0.18);
+            }
+            playSelect() {
+                this.playTone(587.33, 'triangle', 0.3, 0, 0.2);
+                this.playTone(880.00, 'sine', 0.45, 0.08, 0.15);
+            }
+            playSnap() {
+                this.playTone(523.25, 'sine', 0.2, 0, 0.2);
+                this.playTone(659.25, 'triangle', 0.3, 0.06, 0.22);
+                this.playTone(783.99, 'sine', 0.35, 0.12, 0.25);
+                this.playTone(1046.50, 'sine', 0.55, 0.18, 0.3);
+            }
+            playCelebration() {
+                const notes = [523.25, 659.25, 783.99, 880.00, 1046.50, 1318.51];
+                notes.forEach((note, idx) => {
+                    this.playTone(note, 'triangle', 0.6, idx * 0.12, 0.22);
+                });
+            }
+            playGiftReceived() {
+                const notes = [659.25, 880.00, 1046.50, 1318.51, 1567.98];
+                notes.forEach((note, idx) => {
+                    this.playTone(note, 'sine', 0.7, idx * 0.1, 0.25);
+                });
+            }
+        }
+        const sounds = new FestiveSoundManager();
+
+        /* Flower Petals & Confetti */
+        class CelebrationConfetti {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                if (this.canvas) {
+                    this.ctx = this.canvas.getContext('2d');
+                    this.particles = [];
+                    this.animId = null;
+                    this.isRunning = false;
+                    this.resize();
+                    window.addEventListener('resize', () => this.resize());
+                }
+            }
+            resize() {
+                if (!this.canvas) return;
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            start() {
+                if (!this.canvas) return;
+                this.resize();
+                this.particles = [];
+                this.isRunning = true;
+                const colors = ['#f58220', '#ffb703', '#ffd166', '#c0192d', '#e63946', '#ff4d6d', '#d4af37', '#fbe28a'];
+                for (let i = 0; i < 85; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * -this.canvas.height * 0.8,
+                        w: 10 + Math.random() * 12,
+                        h: 14 + Math.random() * 16,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        angle: Math.random() * 360,
+                        spinSpeed: (Math.random() - 0.5) * 4,
+                        speedX: (Math.random() - 0.5) * 2.5,
+                        speedY: 2.2 + Math.random() * 3.5,
+                        flutterPhase: Math.random() * Math.PI * 2,
+                        opacity: 0.85 + Math.random() * 0.15,
+                        type: Math.random() > 0.3 ? 'petal' : 'goldSquare'
+                    });
+                }
+                this.animate();
+            }
+            stop() {
+                this.isRunning = false;
+                if (this.animId) cancelAnimationFrame(this.animId);
+                if (this.ctx && this.canvas) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+            animate() {
+                if (!this.isRunning || !this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                for (let p of this.particles) {
+                    p.y += p.speedY;
+                    p.x += Math.sin(p.flutterPhase) * 1.5 + p.speedX;
+                    p.flutterPhase += 0.04;
+                    p.angle += p.spinSpeed;
+                    if (p.y > this.canvas.height + 30) {
+                        p.y = -20;
+                        p.x = Math.random() * this.canvas.width;
+                    }
+                    this.ctx.save();
+                    this.ctx.translate(p.x, p.y);
+                    this.ctx.rotate((p.angle * Math.PI) / 180);
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.globalAlpha = p.opacity;
+                    if (p.type === 'petal') {
+                        this.ctx.beginPath();
+                        this.ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    } else {
+                        this.ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.w);
+                    }
+                    this.ctx.restore();
+                }
+                this.animId = requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        /* Realtime Synchronization Manager */
+        class RealtimeSyncManager {
+            constructor() {
+                this.db = null;
+                this.useFirebase = false;
+                this.roomId = null;
+                this.onStateChangeCallback = null;
+                this.broadcastChannel = null;
+                this.init();
+            }
+
+            init() {
+                this.useFirebase = false;
+                this.updateStatus('Multi-Tab Sync (Demo Ready)', true);
+
+                if ('BroadcastChannel' in window) {
+                    try {
+                        this.broadcastChannel = new BroadcastChannel('raksha_bandhan_sync');
+                        this.broadcastChannel.onmessage = (event) => {
+                            if (event.data && event.data.roomId === this.roomId) {
+                                if (this.onStateChangeCallback) {
+                                    this.onStateChangeCallback(event.data.state);
+                                }
+                            }
+                        };
+                    } catch (e) {}
+                }
+            }
+
+            updateStatus(text, isOnline) {
+                const dot = document.querySelector('.status-dot');
+                const label = document.getElementById('statusText');
+                if (dot && label) {
+                    label.textContent = text;
+                    dot.className = `status-dot ${isOnline ? '' : 'offline'}`;
+                }
+            }
+
+            subscribe(roomId, callback) {
+                this.roomId = roomId;
+                this.onStateChangeCallback = callback;
+
+                const saved = localStorage.getItem(`room_${roomId}`);
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        callback(parsed);
+                    } catch (e) {}
+                }
+            }
+
+            updateRoomState(updates) {
+                if (!this.roomId) return;
+                const key = `room_${this.roomId}`;
+                const existing = JSON.parse(localStorage.getItem(key) || '{}');
+                const merged = {...existing,
+                    ...updates
+                };
+                localStorage.setItem(key, JSON.stringify(merged));
+
+                if (this.broadcastChannel) {
+                    try {
+                        this.broadcastChannel.postMessage({
+                            roomId: this.roomId,
+                            state: merged
+                        });
+                    } catch (e) {}
+                }
+                if (this.onStateChangeCallback) {
+                    this.onStateChangeCallback(merged);
+                }
+            }
+        }
+
+        /* Main Application Controller */
+        class RakshaBandhanApp {
+            constructor() {
+                this.role = null;
+                this.roomId = null;
+                this.sisterName = 'Sister';
+                this.brotherName = 'Brother';
+                this.sisterUpiId = 'sister@upi';
+                this.selectedRakhiId = null;
+                this.isTied = false;
+                this.lastStreamTime = 0;
+                this.selectedGiftAmount = 101;
+                this.selectedCoffeeAmount = 50;
+                this.devUpiId = 'umakantm339-1@okicici';
+                this.giftPromptShown = false;
+                this.giftCelebrated = false;
+
+                this.sync = new RealtimeSyncManager();
+                this.confetti = new CelebrationConfetti('celebrationCanvas');
+
+                this.scenes = {
+                    welcome: document.getElementById('sceneWelcome'),
+                    createRoom: document.getElementById('sceneCreateRoom'),
+                    waitingBrother: document.getElementById('sceneWaitingBrother'),
+                    brotherJoin: document.getElementById('sceneBrotherJoin'),
+                    select: document.getElementById('sceneSelect'),
+                    tie: document.getElementById('sceneTie'),
+                    celebration: document.getElementById('sceneCelebration')
+                };
+
+                this.modals = {
+                    giftPrompt: document.getElementById('modalGiftPrompt'),
+                    amountSelection: document.getElementById('modalAmountSelection'),
+                    paymentConfirm: document.getElementById('modalPaymentConfirm'),
+                    sisterCelebration: document.getElementById('modalSisterGiftCelebration'),
+                    devCoffee: document.getElementById('modalDevCoffee')
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.renderRakhiList();
+                this.spawnBokehParticles();
+                this.setupEventListeners();
+                this.setupPointerDrag();
+                this.setupGiftingListeners();
+                this.setupDeveloperCoffeeListeners();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const roomParam = urlParams.get('room');
+
+                if (roomParam) {
+                    this.handleRoomLinkArrival(roomParam.toUpperCase());
+                }
+            }
+
+            renderRakhiList() {
+                for (const [id, data] of Object.entries(RAKHI_DATA)) {
+                    const container = document.getElementById(`svgHolder-${id}`);
+                    if (container) container.innerHTML = data.svg;
+                }
+            }
+
+            spawnBokehParticles() {
+                const container = document.getElementById('bokehContainer');
+                if (!container) return;
+                for (let i = 0; i < 14; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'bokeh-dot';
+                    const size = 6 + Math.random() * 12;
+                    dot.style.width = `${size}px`;
+                    dot.style.height = `${size}px`;
+                    dot.style.left = `${Math.random() * 100}%`;
+                    dot.style.animationDelay = `${Math.random() * 6}s`;
+                    dot.style.animationDuration = `${6 + Math.random() * 6}s`;
+                    container.appendChild(dot);
+                }
+            }
+
+            goToScene(sceneName) {
+                sounds.playTap();
+                Object.values(this.scenes).forEach(s => s && s.classList.remove('active'));
+                if (this.scenes[sceneName]) {
+                    this.scenes[sceneName].classList.add('active');
+                }
+                if (sceneName === 'celebration') {
+                    this.confetti.start();
+                    sounds.playCelebration();
+                } else {
+                    this.confetti.stop();
+                }
+            }
+
+            setupEventListeners() {
+                document.getElementById('btnRoleSister').addEventListener('click', () => {
+                    this.role = 'sister';
+                    this.goToScene('createRoom');
+                });
+
+                document.getElementById('btnRoleBrother').addEventListener('click', () => {
+                    this.role = 'brother';
+                    const manualCode = prompt('Enter the 6-character Rakhi Room Code shared by your sister:');
+                    if (manualCode && manualCode.trim()) {
+                        this.handleRoomLinkArrival(manualCode.trim().toUpperCase());
+                    }
+                });
+
+                document.getElementById('btnBackFromCreate').addEventListener('click', () => {
+                    this.goToScene('welcome');
+                });
+
+                document.getElementById('btnCreateRoomSubmit').addEventListener('click', () => {
+                    const sInput = document.getElementById('sisterNameInput').value.trim();
+                    const bInput = document.getElementById('brotherNameInput').value.trim();
+                    const upiInput = document.getElementById('sisterUpiInput').value.trim();
+
+                    this.sisterName = sInput || 'Pooja';
+                    this.brotherName = bInput || 'Rahul';
+                    this.sisterUpiId = upiInput || 'sister@upi';
+                    this.roomId = 'RAKHI-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+                    this.createRoomInDatabase();
+                });
+
+                document.getElementById('btnSimulateJoinSolo').addEventListener('click', () => {
+                    this.sync.updateRoomState({
+                        brotherOnline: true,
+                        status: 'both_connected'
+                    });
+                });
+
+                document.getElementById('btnBrotherReady').addEventListener('click', () => {
+                    this.sync.updateRoomState({
+                        brotherOnline: true,
+                        status: 'both_connected'
+                    });
+                    this.goToScene('select');
+                });
+
+                document.getElementById('btnShareWhatsApp').addEventListener('click', () => this.shareViaWhatsApp());
+                document.getElementById('btnCopyLink').addEventListener('click', () => this.copyRoomLink());
+
+                const cards = document.querySelectorAll('.rakhi-card');
+                cards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        if (this.role === 'brother') return;
+                        this.selectRakhi(card.dataset.rakhiId);
+                    });
+                });
+
+                document.getElementById('btnContinueToTie').addEventListener('click', () => {
+                    if (!this.selectedRakhiId) return;
+                    this.sync.updateRoomState({
+                        status: 'tying_ready',
+                        selectedRakhi: this.selectedRakhiId
+                    });
+                    this.prepareTieScene();
+                    this.goToScene('tie');
+                });
+
+                document.getElementById('btnShareMoment').addEventListener('click', () => this.shareCelebrationMoment());
+
+                document.getElementById('btnRestart').addEventListener('click', () => {
+                    this.sync.updateRoomState({
+                        status: 'both_connected',
+                        rakhiTied: false,
+                        selectedRakhi: null,
+                        giftSent: false
+                    });
+                });
+
+                document.getElementById('audioToggle').addEventListener('click', () => {
+                    sounds.enabled = !sounds.enabled;
+                    const iconOn = document.querySelector('.icon-sound-on');
+                    const iconOff = document.querySelector('.icon-sound-off');
+                    if (sounds.enabled) {
+                        iconOn.classList.remove('hidden');
+                        iconOff.classList.add('hidden');
+                        sounds.playTap();
+                    } else {
+                        iconOn.classList.add('hidden');
+                        iconOff.classList.remove('hidden');
+                    }
+                });
+            }
+
+            createRoomInDatabase() {
+                document.getElementById('displayRoomCode').textContent = this.roomId;
+                document.getElementById('waitingBrotherName').textContent = this.brotherName;
+                document.getElementById('waitingBrotherNameSpan').textContent = this.brotherName;
+
+                const initialPayload = {
+                    roomId: this.roomId,
+                    sisterName: this.sisterName,
+                    brotherName: this.brotherName,
+                    sisterUpiId: this.sisterUpiId,
+                    status: 'waiting_for_brother',
+                    sisterOnline: true,
+                    brotherOnline: false,
+                    selectedRakhi: null,
+                    rakhiTied: false,
+                    giftSent: false,
+                    giftAmount: null,
+                    liveDrag: null,
+                    createdAt: Date.now()
+                };
+
+                this.sync.subscribe(this.roomId, (state) => this.handleSynchronizedState(state));
+                this.sync.updateRoomState(initialPayload);
+
+                this.goToScene('waitingBrother');
+            }
+
+            handleRoomLinkArrival(roomId) {
+                this.roomId = roomId;
+                this.role = 'brother';
+
+                document.getElementById('brotherRoomCodeDisplay').textContent = roomId;
+
+                this.sync.subscribe(roomId, (state) => {
+                    if (state) {
+                        this.sisterName = state.sisterName || 'Sister';
+                        this.brotherName = state.brotherName || 'Brother';
+                        this.sisterUpiId = state.sisterUpiId || 'sister@upi';
+                        document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
+                        this.handleSynchronizedState(state);
+                    }
+                });
+
+                this.goToScene('brotherJoin');
+            }
+
+            handleSynchronizedState(state) {
+                if (!state) return;
+
+                this.sisterName = state.sisterName || this.sisterName;
+                this.brotherName = state.brotherName || this.brotherName;
+                this.sisterUpiId = state.sisterUpiId || this.sisterUpiId;
+
+                const sNameEl = document.getElementById('celebSisterName');
+                const bNameEl = document.getElementById('celebBrotherName');
+                if (sNameEl) sNameEl.textContent = this.sisterName;
+                if (bNameEl) bNameEl.textContent = this.brotherName;
+
+                if (this.role === 'sister' && state.brotherOnline && state.status === 'both_connected') {
+                    const waitTitle = document.getElementById('liveWaitingStatus');
+                    if (waitTitle) waitTitle.innerHTML = `🎉 <strong>${this.brotherName} is here!</strong> ❤️`;
+                    setTimeout(() => {
+                        this.goToScene('select');
+                    }, 900);
+                }
+
+                if (state.selectedRakhi) {
+                    this.selectedRakhiId = state.selectedRakhi;
+                    const cards = document.querySelectorAll('.rakhi-card');
+                    cards.forEach(c => {
+                        if (c.dataset.rakhiId === state.selectedRakhi) c.classList.add('selected');
+                        else c.classList.remove('selected');
+                    });
+
+                    if (this.role === 'brother') {
+                        const hint = document.getElementById('brotherSelectionHint');
+                        const selected = RAKHI_DATA[state.selectedRakhi];
+                        if (hint && selected) {
+                            hint.classList.remove('hidden');
+                            hint.textContent = `✨ ${this.sisterName} chose the ${selected.name} Rakhi for you!`;
+                        }
+                    }
+                }
+
+                if (state.status === 'tying_ready') {
+                    this.prepareTieScene();
+                    this.goToScene('tie');
+                }
+
+                if (this.role === 'brother' && state.liveDrag && !this.isTied) {
+                    this.applyBrotherLiveDrag(state.liveDrag);
+                }
+
+                if (state.rakhiTied && !this.isTied) {
+                    this.triggerSuccessfulTie(state.selectedRakhi || this.selectedRakhiId);
+                }
+
+                if (state.giftSent && !this.giftCelebrated) {
+                    this.giftCelebrated = true;
+                    this.triggerGiftCelebrationOnSisterScreen(state.giftAmount || 101);
+                }
+            }
+
+            selectRakhi(rakhiId) {
+                this.selectedRakhiId = rakhiId;
+                sounds.playSelect();
+                if (navigator.vibrate) navigator.vibrate(25);
+
+                const cards = document.querySelectorAll('.rakhi-card');
+                cards.forEach(c => {
+                    if (c.dataset.rakhiId === rakhiId) c.classList.add('selected');
+                    else c.classList.remove('selected');
+                });
+
+                document.getElementById('btnContinueToTie').disabled = false;
+                this.sync.updateRoomState({
+                    selectedRakhi: rakhiId
+                });
+            }
+
+            prepareTieScene() {
+                const selected = RAKHI_DATA[this.selectedRakhiId || 'lotus'];
+                if (!selected) return;
+
+                const dragHolder = document.getElementById('draggableSvgHolder');
+                const sisterDock = document.getElementById('dragSourceTray');
+                const brotherDock = document.getElementById('brotherLiveTray');
+                const instruction = document.getElementById('tieInstructionText');
+
+                if (dragHolder) dragHolder.innerHTML = selected.svg;
+                this.isTied = false;
+
+                if (this.role === 'sister') {
+                    if (sisterDock) sisterDock.classList.remove('hidden');
+                    if (brotherDock) brotherDock.classList.add('hidden');
+                    if (instruction) instruction.textContent = `Now tie the Rakhi on ${this.brotherName}'s wrist 🤍`;
+                } else {
+                    if (sisterDock) sisterDock.classList.add('hidden');
+                    if (brotherDock) brotherDock.classList.remove('hidden');
+                    if (instruction) instruction.textContent = `${this.sisterName} is tying the Rakhi on your wrist... 🤍`;
+                }
+            }
+
+            setupPointerDrag() {
+                const el = document.getElementById('draggableRakhi');
+                if (!el) return;
+
+                el.addEventListener('pointerdown', (e) => {
+                    if (this.role !== 'sister' || this.isTied) return;
+                    sounds.initContext();
+                    sounds.playTap();
+                    if (navigator.vibrate) navigator.vibrate(15);
+
+                    this.isPointerDown = true;
+                    el.classList.remove('returning');
+                    el.classList.add('dragging');
+                    this.dragStartPos = {
+                        x: e.clientX,
+                        y: e.clientY
+                    };
+                    el.setPointerCapture(e.pointerId);
+                });
+
+                window.addEventListener('pointermove', (e) => {
+                    if (!this.isPointerDown || this.role !== 'sister' || this.isTied) return;
+                    e.preventDefault();
+
+                    const deltaX = e.clientX - this.dragStartPos.x;
+                    const deltaY = e.clientY - this.dragStartPos.y;
+
+                    el.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.15)`;
+                    this.checkTargetProximity();
+
+                    const now = Date.now();
+                    if (now - this.lastStreamTime > 40) {
+                        this.lastStreamTime = now;
+                        this.sync.updateRoomState({
+                            liveDrag: {
+                                x: Math.round(deltaX),
+                                y: Math.round(deltaY),
+                                isNear: this.isNearTarget
+                            }
+                        });
+                    }
+                });
+
+                const finishDrag = () => {
+                    if (!this.isPointerDown || this.role !== 'sister' || this.isTied) return;
+                    this.isPointerDown = false;
+                    el.classList.remove('dragging');
+
+                    if (this.isNearTarget) {
+                        this.sync.updateRoomState({
+                            rakhiTied: true,
+                            status: 'celebration',
+                            liveDrag: null
+                        });
+                    } else {
+                        el.classList.add('returning');
+                        el.style.transform = `translate(0px, 0px) scale(1)`;
+                        this.sync.updateRoomState({
+                            liveDrag: {
+                                x: 0,
+                                y: 0,
+                                isNear: false
+                            }
+                        });
+                    }
+                };
+
+                window.addEventListener('pointerup', finishDrag);
+                window.addEventListener('pointercancel', finishDrag);
+            }
+
+            checkTargetProximity() {
+                const el = document.getElementById('draggableRakhi');
+                const target = document.getElementById('wristDropTarget');
+                if (!el || !target) return;
+                const rRect = el.getBoundingClientRect();
+                const tRect = target.getBoundingClientRect();
+
+                const rCenter = {
+                    x: rRect.left + rRect.width / 2,
+                    y: rRect.top + rRect.height / 2
+                };
+                const tCenter = {
+                    x: tRect.left + tRect.width / 2,
+                    y: tRect.top + tRect.height / 2
+                };
+
+                const distance = Math.hypot(rCenter.x - tCenter.x, rCenter.y - tCenter.y);
+                this.isNearTarget = distance < 85;
+
+                if (distance < 100) target.classList.add('near-active');
+                else target.classList.remove('near-active');
+            }
+
+            applyBrotherLiveDrag(dragData) {
+                const target = document.getElementById('wristDropTarget');
+                if (!target) return;
+                if (dragData.isNear) target.classList.add('near-active');
+                else target.classList.remove('near-active');
+            }
+
+            triggerSuccessfulTie(rakhiId) {
+                this.isTied = true;
+                sounds.playSnap();
+                if (navigator.vibrate) navigator.vibrate([40, 60, 80]);
+
+                const selected = RAKHI_DATA[rakhiId || this.selectedRakhiId || 'lotus'];
+                const tiedAnchor = document.getElementById('tiedRakhiAnchor');
+                const celebAnchor = document.getElementById('celebrationTiedRakhiAnchor');
+                const dragEl = document.getElementById('draggableRakhi');
+
+                if (dragEl) dragEl.style.opacity = '0';
+
+                if (tiedAnchor) {
+                    tiedAnchor.innerHTML = `
+            <div class="tied-wrist-thread-band"></div>
+            <div class="tied-wrapper-graphic">${selected.svg}</div>
+          `;
+                    tiedAnchor.classList.add('snapped');
+                }
+
+                if (celebAnchor) {
+                    celebAnchor.innerHTML = `
+            <div class="tied-wrist-thread-band"></div>
+            <div class="tied-wrapper-graphic">${selected.svg}</div>
+          `;
+                }
+
+                setTimeout(() => {
+                    this.goToScene('celebration');
+
+                    if (this.role === 'brother' && !this.giftPromptShown) {
+                        setTimeout(() => {
+                            this.showBrotherGiftPrompt();
+                        }, 2500);
+                    }
+                }, 1400);
+            }
+
+            setupGiftingListeners() {
+                document.getElementById('btnOpenAmountSelection').addEventListener('click', () => {
+                    this.modals.giftPrompt.classList.add('hidden');
+                    this.showAmountSelectionModal();
+                });
+
+                document.getElementById('btnDismissGiftPrompt').addEventListener('click', () => {
+                    this.modals.giftPrompt.classList.add('hidden');
+                    document.getElementById('btnManualSendGift').classList.remove('hidden');
+                });
+
+                document.getElementById('btnManualSendGift').addEventListener('click', () => {
+                    this.showAmountSelectionModal();
+                });
+
+                const chips = document.querySelectorAll('.gift-chip');
+                const customInput = document.getElementById('customAmountInput');
+
+                chips.forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        chips.forEach(c => c.classList.remove('selected'));
+                        chip.classList.add('selected');
+                        const amt = parseInt(chip.dataset.amount, 10);
+                        this.selectedGiftAmount = amt;
+                        customInput.value = amt;
+                        this.updateDesktopQrCode();
+                    });
+                });
+
+                customInput.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    if (val > 0) {
+                        this.selectedGiftAmount = val;
+                        chips.forEach(c => {
+                            if (parseInt(c.dataset.amount, 10) === val) c.classList.add('selected');
+                            else c.classList.remove('selected');
+                        });
+                        this.updateDesktopQrCode();
+                    }
+                });
+
+                document.getElementById('btnCancelAmount').addEventListener('click', () => {
+                    this.modals.amountSelection.classList.add('hidden');
+                    document.getElementById('btnManualSendGift').classList.remove('hidden');
+                });
+
+                document.getElementById('btnPayViaUpi').addEventListener('click', () => {
+                    this.launchUpiPaymentIntent();
+                });
+
+                document.getElementById('btnConfirmGiftSent').addEventListener('click', () => {
+                    this.modals.paymentConfirm.classList.add('hidden');
+                    document.getElementById('btnManualSendGift').classList.add('hidden');
+
+                    this.sync.updateRoomState({
+                        giftSent: true,
+                        giftAmount: this.selectedGiftAmount,
+                        giftTimestamp: Date.now()
+                    });
+
+                    alert(`Thank you! A special gift celebration was sent to ${this.sisterName} ❤️`);
+                });
+
+                document.getElementById('btnNotYetPaid').addEventListener('click', () => {
+                    this.modals.paymentConfirm.classList.add('hidden');
+                    this.modals.amountSelection.classList.remove('hidden');
+                });
+
+                document.getElementById('btnCloseSisterGiftModal').addEventListener('click', () => {
+                    this.modals.sisterCelebration.classList.add('hidden');
+                });
+            }
+
+            /* Developer Coffee Modal Handlers (Pure Custom Amount) */
+            setupDeveloperCoffeeListeners() {
+                document.getElementById('btnOpenCoffeeModal').addEventListener('click', () => {
+                    this.modals.devCoffee.classList.remove('hidden');
+                    this.updateDevDesktopQrCode();
+                });
+
+                document.getElementById('btnCloseCoffeeModal').addEventListener('click', () => {
+                    this.modals.devCoffee.classList.add('hidden');
+                });
+
+                // Copy Developer UPI ID
+                document.getElementById('btnCopyDevUpi').addEventListener('click', () => {
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(this.devUpiId).then(() => {
+                            const tag = document.getElementById('devUpiCopyTag');
+                            tag.textContent = '✅ Copied!';
+                            setTimeout(() => {
+                                tag.textContent = '📋 Copy';
+                            }, 2500);
+                        });
+                    }
+                });
+
+                const coffeeCustomInput = document.getElementById('customCoffeeAmountInput');
+                coffeeCustomInput.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    if (val > 0) {
+                        this.selectedCoffeeAmount = val;
+                        this.updateDevDesktopQrCode();
+                    }
+                });
+
+                document.getElementById('btnPayDevCoffee').addEventListener('click', () => {
+                    this.launchDevCoffeePayment();
+                });
+            }
+
+            getDevUpiUrl() {
+                const cleanName = encodeURIComponent('Umakant Mishra');
+                const note = encodeURIComponent('Coffee for Developer ☕❤️');
+                const amount = encodeURIComponent(this.selectedCoffeeAmount || 50);
+                return `upi://pay?pa=${encodeURIComponent(this.devUpiId)}&pn=${cleanName}&am=${amount}&cu=INR&tn=${note}`;
+            }
+
+            updateDevDesktopQrCode() {
+                if (window.innerWidth >= 600) {
+                    const qrContainer = document.getElementById('desktopDevQrContainer');
+                    const qrImg = document.getElementById('devUpiQrImage');
+                    const upiUrl = this.getDevUpiUrl();
+                    if (qrContainer && qrImg) {
+                        qrContainer.classList.remove('hidden');
+                        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUrl)}`;
+                    }
+                }
+            }
+
+            launchDevCoffeePayment() {
+                const upiUrl = this.getDevUpiUrl();
+                try {
+                    window.location.href = upiUrl;
+                } catch (e) {}
+            }
+
+            showBrotherGiftPrompt() {
+                this.giftPromptShown = true;
+                document.getElementById('promptSisterName').textContent = this.sisterName;
+                this.modals.giftPrompt.classList.remove('hidden');
+            }
+
+            showAmountSelectionModal() {
+                document.getElementById('amountSisterName').textContent = this.sisterName;
+                this.modals.amountSelection.classList.remove('hidden');
+                this.updateDesktopQrCode();
+            }
+
+            getUpiPaymentUrl() {
+                const upiId = this.sisterUpiId || 'sister@upi';
+                const cleanName = encodeURIComponent(this.sisterName);
+                const note = encodeURIComponent('Raksha Bandhan Gift ❤️');
+                const amount = encodeURIComponent(this.selectedGiftAmount);
+                return `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${cleanName}&am=${amount}&cu=INR&tn=${note}`;
+            }
+
+            updateDesktopQrCode() {
+                if (window.innerWidth >= 600) {
+                    const qrContainer = document.getElementById('desktopQrContainer');
+                    const qrImg = document.getElementById('upiQrImage');
+                    const upiUrl = this.getUpiPaymentUrl();
+                    if (qrContainer && qrImg) {
+                        qrContainer.classList.remove('hidden');
+                        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUrl)}`;
+                    }
+                }
+            }
+
+            launchUpiPaymentIntent() {
+                const upiUrl = this.getUpiPaymentUrl();
+                try {
+                    window.location.href = upiUrl;
+                } catch (e) {}
+
+                setTimeout(() => {
+                    this.modals.amountSelection.classList.add('hidden');
+                    document.getElementById('confirmSisterName').textContent = this.sisterName;
+                    document.getElementById('confirmAmountDisplay').textContent = this.selectedGiftAmount;
+                    this.modals.paymentConfirm.classList.remove('hidden');
+                }, 1200);
+            }
+
+            triggerGiftCelebrationOnSisterScreen(amount) {
+                sounds.playGiftReceived();
+                if (navigator.vibrate) navigator.vibrate([100, 50, 150, 50, 200]);
+                this.confetti.start();
+
+                const amtEl = document.getElementById('receivedGiftAmount');
+                const broEl = document.getElementById('receivedBrotherName');
+                const statusPill = document.getElementById('celebStatusPillText');
+
+                if (amtEl) amtEl.textContent = `₹${amount}`;
+                if (broEl) broEl.textContent = this.brotherName;
+                if (statusPill) statusPill.innerHTML = `🎁 Gift of ₹${amount} Received!`;
+
+                if (this.modals.sisterCelebration) {
+                    this.modals.sisterCelebration.classList.remove('hidden');
+                }
+            }
+
+            getShareableLink() {
+                const baseUrl = window.location.origin + window.location.pathname;
+                return `${baseUrl}?room=${this.roomId}`;
+            }
+
+            shareViaWhatsApp() {
+                const link = this.getShareableLink();
+                const msg = encodeURIComponent(
+                    `Hey ${this.brotherName}! ❤️ I have something special for you this Raksha Bandhan ✨ Open this link and let's tie your Rakhi live: ${link}`
+                );
+                window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+            }
+
+            copyRoomLink() {
+                const link = this.getShareableLink();
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(link).then(() => {
+                        const btn = document.getElementById('copyBtnText');
+                        if (btn) {
+                            btn.textContent = '✅ Copied!';
+                            setTimeout(() => {
+                                btn.textContent = '📋 Copy Link';
+                            }, 2500);
+                        }
+                    });
+                }
+            }
+
+            shareCelebrationMoment() {
+                const text = `Happy Raksha Bandhan! ❤️ ${this.sisterName} & ${this.brotherName} celebrated their bond together across distance ✨`;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Happy Raksha Bandhan ❤️',
+                        text: text,
+                        url: window.location.href
+                    }).catch(() => {});
+                } else {
+                    this.copyRoomLink();
+                    alert('Celebration link copied! Share this sweet moment with family.');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new RakshaBandhanApp();
+        });
+    </script>
+</body>
+
+</html>
