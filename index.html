@@ -9,10 +9,13 @@
 
     <!-- Google Fonts: Festive Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK Compatibility Libraries -->
+    <!-- Global Cloud Realtime Engine (MQTT over Secure WebSockets) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.5/mqtt.min.js"></script>
+
+    <!-- Firebase SDK (Optional plug-and-play) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
@@ -160,7 +163,7 @@
             width: 20px;
             height: 20px;
         }
-        /* Clean Realtime Status Pill */
+        /* Cloud Sync Status Indicator */
         
         .connection-status-pill {
             position: absolute;
@@ -1034,9 +1037,7 @@
             color: var(--color-text-muted);
             margin-bottom: 6px;
         }
-        /* ==========================================================================
-       SMOOTH HARDWARE-ACCELERATED MOBILE DRAGGER
-       ========================================================================== */
+        /* Draggable Rakhi Container */
         
         .draggable-rakhi-container {
             position: relative;
@@ -1523,7 +1524,6 @@
             cursor: pointer;
             padding: 6px;
         }
-        /* UPI ID Display Pill */
         
         .dev-upi-badge {
             display: inline-flex;
@@ -1600,7 +1600,6 @@
             color: var(--color-text-main);
             background: transparent;
         }
-        /* Brother Gift Shagun Chips */
         
         .shagun-chips-grid {
             display: grid;
@@ -1715,7 +1714,7 @@
     <!-- Realtime Connection Status Pill -->
     <div class="connection-status-pill" id="connectionStatus">
         <span class="status-dot"></span>
-        <span class="status-text" id="statusText">Ready</span>
+        <span class="status-text" id="statusText">Cloud Sync Live</span>
     </div>
 
     <main class="app-stage" id="appStage">
@@ -1798,7 +1797,6 @@
                         <label for="sisterUpiInput">Where should your brother send your gift? 💝</label>
                         <input type="text" id="sisterUpiInput" placeholder="e.g. pooja@okhdfcbank or 9876543210@paytm" maxlength="64" value="sister@upi" autocomplete="off" />
                         <span class="input-hint">Your UPI ID (Google Pay, PhonePe, Paytm, BHIM)</span>
-                        <span class="input-error hidden" id="upiError">Please enter a valid UPI ID (e.g. name@upi)</span>
                     </div>
                 </div>
 
@@ -1854,7 +1852,7 @@
 
                 <div class="action-dock">
                     <p style="font-size: 0.74rem; color: #8c6a16; text-align: center; margin-top: 4px;">
-                        ⚡ As soon as your brother opens the link, this screen will advance automatically!
+                        ⚡ As soon as your brother opens the link on his phone, your screen will advance automatically!
                     </p>
                 </div>
             </div>
@@ -2141,9 +2139,7 @@
             </div>
         </section>
 
-        <!-- ==========================================================================
-         PERSISTENT FOOTER: BUY DEVELOPER A COFFEE
-         ====================================================================== -->
+        <!-- PERSISTENT FOOTER: BUY DEVELOPER A COFFEE -->
         <footer class="app-footer">
             <button class="btn-buy-coffee-footer" id="btnOpenCoffeeModal">
         <span>☕ Buy a Coffee for Developer</span>
@@ -2151,11 +2147,7 @@
       </button>
         </footer>
 
-        <!-- ==========================================================================
-         MODALS (GIFTING & COFFEE)
-         ====================================================================== -->
-
-        <!-- DEVELOPER COFFEE MODAL -->
+        <!-- MODALS (GIFTING & COFFEE) -->
         <div class="modal-overlay hidden" id="modalDevCoffee">
             <div class="modal-card">
                 <div class="modal-gift-icon">☕</div>
@@ -2192,7 +2184,7 @@
             </div>
         </div>
 
-        <!-- 1. BROTHER GIFT PROMPT MODAL -->
+        <!-- BROTHER GIFT PROMPT MODAL -->
         <div class="modal-overlay hidden" id="modalGiftPrompt">
             <div class="modal-card">
                 <div class="modal-gift-icon">🎁</div>
@@ -2208,7 +2200,7 @@
             </div>
         </div>
 
-        <!-- 2. BROTHER AMOUNT SELECTION MODAL -->
+        <!-- BROTHER AMOUNT SELECTION MODAL -->
         <div class="modal-overlay hidden" id="modalAmountSelection">
             <div class="modal-card">
                 <header class="modal-header">
@@ -2243,7 +2235,7 @@
             </div>
         </div>
 
-        <!-- 3. BROTHER PAYMENT CONFIRMATION MODAL -->
+        <!-- BROTHER PAYMENT CONFIRMATION MODAL -->
         <div class="modal-overlay hidden" id="modalPaymentConfirm">
             <div class="modal-card">
                 <div class="modal-gift-icon">💳</div>
@@ -2259,7 +2251,7 @@
             </div>
         </div>
 
-        <!-- 4. SISTER GIFT RECEIVED CELEBRATION MODAL -->
+        <!-- SISTER GIFT RECEIVED CELEBRATION MODAL -->
         <div class="modal-overlay hidden" id="modalSisterGiftCelebration">
             <div class="modal-card gift-celebration-card">
                 <div class="modal-gift-icon bounce">🎁</div>
@@ -2282,29 +2274,6 @@
 
     <script>
         'use strict';
-
-        // ==========================================================================
-        // 🔥 FIREBASE REALTIME DATABASE CONFIGURATION
-        // (Paste your Firebase credentials here for cloud cross-device sync)
-        // ==========================================================================
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        function isFirebaseConfigured() {
-            return (
-                firebaseConfig.apiKey &&
-                firebaseConfig.apiKey !== "YOUR_API_KEY" &&
-                firebaseConfig.databaseURL &&
-                !firebaseConfig.databaseURL.includes("YOUR_PROJECT_ID")
-            );
-        }
 
         // ==========================================================================
         // RAKHI VECTOR ARTWORK DATA
@@ -2588,9 +2557,7 @@
         // ==========================================================================
         class RakshaBandhanApp {
             constructor() {
-                this.db = null;
-                this.roomRef = null;
-                this.channel = null;
+                this.mqttClient = null;
                 this.role = null; // 'sister' | 'brother'
                 this.roomId = null;
                 this.sisterName = 'Sister';
@@ -2604,6 +2571,7 @@
                 this.devUpiId = 'umakantm339-1@okicici';
                 this.giftPromptShown = false;
                 this.giftCelebrated = false;
+                this.roomState = {};
 
                 this.confetti = new CelebrationConfetti('celebrationCanvas');
 
@@ -2629,7 +2597,6 @@
             }
 
             init() {
-                this.initFirebase();
                 this.renderRakhiList();
                 this.spawnBokehParticles();
                 this.setupEventListeners();
@@ -2643,39 +2610,6 @@
 
                 if (roomParam) {
                     this.handleRoomLinkArrival(roomParam.trim().toUpperCase());
-                }
-            }
-
-            initFirebase() {
-                if (isFirebaseConfigured()) {
-                    try {
-                        if (!firebase.apps.length) {
-                            firebase.initializeApp(firebaseConfig);
-                        }
-                        this.db = firebase.database();
-
-                        this.db.ref('.info/connected').on('value', (snap) => {
-                            if (snap.val() === true) {
-                                this.updateStatus("Live Cloud Sync Active", true);
-                            } else {
-                                this.updateStatus("Ready", true);
-                            }
-                        });
-                    } catch (err) {
-                        console.warn("Firebase notice:", err);
-                        this.updateStatus("Ready", true);
-                    }
-                } else {
-                    this.updateStatus("Ready", true);
-                }
-            }
-
-            updateStatus(text, isOnline) {
-                const dot = document.querySelector('.status-dot');
-                const label = document.getElementById('statusText');
-                if (dot && label) {
-                    label.textContent = text;
-                    dot.className = `status-dot ${isOnline ? '' : 'offline'}`;
                 }
             }
 
@@ -2744,11 +2678,11 @@
                     this.sisterUpiId = upiInput || 'sister@upi';
                     this.roomId = 'RAKHI-' + Math.random().toString(36).substring(2, 7).toUpperCase();
 
-                    this.createRoomInDatabase();
+                    this.createRoom();
                 });
 
                 document.getElementById('btnBrotherReady').addEventListener('click', () => {
-                    this.syncUpdate({
+                    this.broadcastCloudState({
                         brotherReady: true,
                         status: 'both_connected'
                     });
@@ -2768,7 +2702,7 @@
 
                 document.getElementById('btnContinueToTie').addEventListener('click', () => {
                     if (!this.selectedRakhiId) return;
-                    this.syncUpdate({
+                    this.broadcastCloudState({
                         status: 'tying_ready',
                         selectedRakhi: this.selectedRakhiId
                     });
@@ -2779,7 +2713,7 @@
                 document.getElementById('btnShareMoment').addEventListener('click', () => this.shareCelebrationMoment());
 
                 document.getElementById('btnRestart').addEventListener('click', () => {
-                    this.syncUpdate({
+                    this.broadcastCloudState({
                         status: 'both_connected',
                         rakhiTied: false,
                         selectedRakhi: null,
@@ -2805,83 +2739,91 @@
             }
 
             // ======================================================================
-            // UNIFIED REALTIME SYNC (Firebase Cloud + Instant Broadcast Relay)
+            // GLOBAL CROSS-DEVICE CLOUD SYNCHRONIZATION (MQTT WSS)
             // ======================================================================
-            setupChannelSync(roomId) {
+            connectToCloudRelay(roomId) {
+                this.roomId = roomId;
+                const topic = `rakshabandhan/v1/room/${roomId}`;
+
+                try {
+                    if (window.mqtt) {
+                        // High-performance, secure public broker
+                        this.mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+                            clientId: 'rakhi_' + Math.random().toString(16).substring(2, 10),
+                            clean: true,
+                            connectTimeout: 4000,
+                            reconnectPeriod: 2000
+                        });
+
+                        this.mqttClient.on('connect', () => {
+                            this.mqttClient.subscribe(topic, {
+                                qos: 1
+                            });
+
+                            if (this.role === 'brother') {
+                                // Brother immediately publishes brotherOnline = true across devices!
+                                this.broadcastCloudState({
+                                    brotherOnline: true,
+                                    brotherJoined: true
+                                });
+                            } else if (this.role === 'sister') {
+                                // Sister announces room initial state
+                                this.broadcastCloudState({
+                                    sisterName: this.sisterName,
+                                    brotherName: this.brotherName,
+                                    sisterUpiId: this.sisterUpiId,
+                                    brotherOnline: false
+                                });
+                            }
+                        });
+
+                        this.mqttClient.on('message', (t, msg) => {
+                            try {
+                                const data = JSON.parse(msg.toString());
+                                this.handleSynchronizedState(data);
+                            } catch (e) {}
+                        });
+                    }
+                } catch (err) {
+                    console.warn("Cloud connection notice:", err);
+                }
+
+                // Also support local cross-tab fallback
                 try {
                     if (window.BroadcastChannel) {
-                        this.channel = new BroadcastChannel(`rakhi_sync_${roomId}`);
-                        this.channel.onmessage = (event) => {
-                            if (event.data) this.handleSynchronizedState(event.data);
+                        this.localChannel = new BroadcastChannel(`rakhi_sync_${roomId}`);
+                        this.localChannel.onmessage = (e) => {
+                            if (e.data) this.handleSynchronizedState(e.data);
                         };
                     }
-                    window.addEventListener('storage', (e) => {
-                        if (e.key === `rakhi_state_${roomId}` && e.newValue) {
-                            try {
-                                this.handleSynchronizedState(JSON.parse(e.newValue));
-                            } catch (err) {}
-                        }
-                    });
                 } catch (e) {}
             }
 
-            syncUpdate(data) {
-                if (this.db && this.roomRef) {
-                    try {
-                        this.roomRef.update(data);
-                    } catch (e) {}
+            broadcastCloudState(payload) {
+                this.roomState = {...this.roomState,
+                    ...payload,
+                    roomId: this.roomId,
+                    sender: this.role
+                };
+                const msgString = JSON.stringify(this.roomState);
+
+                if (this.mqttClient && this.mqttClient.connected) {
+                    this.mqttClient.publish(`rakshabandhan/v1/room/${this.roomId}`, msgString, {
+                        qos: 1
+                    });
                 }
-                if (this.roomId) {
-                    try {
-                        const cur = JSON.parse(localStorage.getItem(`rakhi_state_${this.roomId}`) || '{}');
-                        const merged = {...cur,
-                            ...data,
-                            roomId: this.roomId
-                        };
-                        localStorage.setItem(`rakhi_state_${this.roomId}`, JSON.stringify(merged));
-                        if (this.channel) this.channel.postMessage(merged);
-                    } catch (e) {}
+
+                if (this.localChannel) {
+                    this.localChannel.postMessage(this.roomState);
                 }
             }
 
-            createRoomInDatabase() {
+            createRoom() {
                 document.getElementById('displayRoomCode').textContent = this.roomId;
                 document.getElementById('waitingBrotherName').textContent = this.brotherName;
                 document.getElementById('waitingBrotherNameSpan').textContent = this.brotherName;
 
-                const initialPayload = {
-                    roomId: this.roomId,
-                    sisterName: this.sisterName,
-                    brotherName: this.brotherName,
-                    sisterUpiId: this.sisterUpiId,
-                    status: 'waiting_for_brother',
-                    sisterOnline: true,
-                    brotherOnline: false,
-                    brotherReady: false,
-                    selectedRakhi: null,
-                    rakhiTied: false,
-                    giftSent: false,
-                    giftAmount: null,
-                    liveDrag: null
-                };
-
-                this.setupChannelSync(this.roomId);
-
-                if (this.db) {
-                    try {
-                        this.roomRef = this.db.ref(`rooms/${this.roomId}`);
-                        this.roomRef.set(initialPayload);
-                        this.roomRef.on('value', (snapshot) => {
-                            const state = snapshot.val();
-                            if (state) this.handleSynchronizedState(state);
-                        });
-                    } catch (e) {}
-                }
-
-                try {
-                    localStorage.setItem(`rakhi_state_${this.roomId}`, JSON.stringify(initialPayload));
-                } catch (e) {}
-
+                this.connectToCloudRelay(this.roomId);
                 this.goToScene('waitingBrother');
             }
 
@@ -2890,47 +2832,12 @@
                 this.role = 'brother';
                 document.getElementById('brotherRoomCodeDisplay').textContent = roomId;
 
-                this.setupChannelSync(roomId);
-
-                // Check locally saved room info if available
-                try {
-                    const cached = localStorage.getItem(`rakhi_state_${roomId}`);
-                    if (cached) {
-                        const data = JSON.parse(cached);
-                        this.sisterName = data.sisterName || this.sisterName;
-                        this.brotherName = data.brotherName || this.brotherName;
-                        this.sisterUpiId = data.sisterUpiId || this.sisterUpiId;
-                        document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
-                    }
-                } catch (e) {}
-
-                if (this.db) {
-                    try {
-                        this.roomRef = this.db.ref(`rooms/${roomId}`);
-                        this.roomRef.on('value', (snapshot) => {
-                            const state = snapshot.val();
-                            if (state) {
-                                this.sisterName = state.sisterName || this.sisterName;
-                                this.brotherName = state.brotherName || this.brotherName;
-                                this.sisterUpiId = state.sisterUpiId || this.sisterUpiId;
-                                document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
-                                this.handleSynchronizedState(state);
-                            }
-                        });
-                    } catch (e) {}
-                }
-
-                // IMMEDIATELY notify Firebase that Brother has arrived
-                this.syncUpdate({
-                    brotherOnline: true,
-                    brotherJoined: true
-                });
-
+                this.connectToCloudRelay(roomId);
                 this.goToScene('brotherJoin');
             }
 
             // ======================================================================
-            // REALTIME STATE RECEIVER & SCENE TRANSITION LOGIC
+            // REALTIME STATE RECEIVER & AUTOMATIC FLOW
             // ======================================================================
             handleSynchronizedState(state) {
                 if (!state) return;
@@ -2943,6 +2850,7 @@
                 const bNameEl = document.getElementById('celebBrotherName');
                 if (sNameEl) sNameEl.textContent = this.sisterName;
                 if (bNameEl) bNameEl.textContent = this.brotherName;
+                document.getElementById('brotherWelcomeSisterName').textContent = this.sisterName;
 
                 // 1. SISTER DETECTS BROTHER OPENED THE LINK (brotherOnline === true)
                 // -> AUTOMATICALLY moves from waiting screen to Rakhi selection screen!
@@ -2952,6 +2860,13 @@
                         waitStatus.innerHTML = `🎉 <strong>${this.brotherName} joined!</strong> Moving to Rakhi selection... ❤️`;
                     }
                     this.goToScene('select');
+
+                    // Send back room info to ensure brother has names & UPI
+                    this.broadcastCloudState({
+                        sisterName: this.sisterName,
+                        brotherName: this.brotherName,
+                        sisterUpiId: this.sisterUpiId
+                    });
                 }
 
                 // 2. Rakhi Selection Synchronized
@@ -3008,7 +2923,7 @@
                 });
 
                 document.getElementById('btnContinueToTie').disabled = false;
-                this.syncUpdate({
+                this.broadcastCloudState({
                     selectedRakhi: rakhiId
                 });
             }
@@ -3069,7 +2984,7 @@
                     const now = Date.now();
                     if (now - this.lastStreamTime > 45) {
                         this.lastStreamTime = now;
-                        this.syncUpdate({
+                        this.broadcastCloudState({
                             liveDrag: {
                                 x: Math.round(deltaX),
                                 y: Math.round(deltaY),
@@ -3089,7 +3004,7 @@
                     } catch (err) {}
 
                     if (this.isNearTarget) {
-                        this.syncUpdate({
+                        this.broadcastCloudState({
                             rakhiTied: true,
                             status: 'celebration',
                             liveDrag: null
@@ -3098,7 +3013,7 @@
                     } else {
                         el.classList.add('returning');
                         el.style.transform = `translate3d(0px, 0px, 0px) scale(1)`;
-                        this.syncUpdate({
+                        this.broadcastCloudState({
                             liveDrag: {
                                 x: 0,
                                 y: 0,
@@ -3234,7 +3149,7 @@
                     this.modals.paymentConfirm.classList.add('hidden');
                     document.getElementById('btnManualSendGift').classList.add('hidden');
 
-                    this.syncUpdate({
+                    this.broadcastCloudState({
                         giftSent: true,
                         giftAmount: this.selectedGiftAmount
                     });
